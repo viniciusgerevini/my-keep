@@ -1,29 +1,48 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdMenu } from 'react-icons/md';
-
-// #5f6368
+import { MdMenu, MdLightbulbOutline } from 'react-icons/md';
 
 export const TopBarWrapper = styled.div `
   position: fixed;
+  display: flex;
+  align-items: center;
   width: 100%;
   background-color: ${props => props.theme.background};
   z-index: 100;
   padding: 10px 15px;
   box-shadow: ${props => props.theme.shadow};
+  color: ${props=> props.theme.secondaryTextColor};
 `;
 
 const TopBarIconWrapper = styled.div `
   display: inline-flex;
   font-size: 1.5em;
-  color: ${props=> props.theme.icon.color};
+  color: ${props=> props.theme.secondaryTextColor};
   padding: 10px;
   border-radius: 50%;
   cursor: pointer;
 
   &:hover {
-    background-color: ${props=> props.theme.icon.hoverBackgroundColor};
+    background-color: ${props=> props.theme.secondaryBackground};
   }
+`;
+
+const AppIconWrapper = styled.div `
+  display: inline-flex;
+  padding: 5px;
+  background-color: #f1b003;
+  color: #fff;
+  // background-color: #eee;
+  margin: 0px 10px;
+  border-radius: 5px;
+`;
+
+const AppLogoWrapper = styled.div `
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5em;
+  margin: 0px 10px;
+  cursor: default;
 `;
 
 export default function TopBar(props) {
@@ -31,5 +50,11 @@ export default function TopBar(props) {
     <TopBarIconWrapper onClick= {() => props.onSidebarButtonClicked()}>
       <MdMenu />
     </TopBarIconWrapper>
+    <AppLogoWrapper>
+      <AppIconWrapper>
+        <MdLightbulbOutline/>
+      </AppIconWrapper>
+      MyKeep
+    </AppLogoWrapper>
   </TopBarWrapper>; 
 }
