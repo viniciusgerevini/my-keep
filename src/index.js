@@ -18,10 +18,6 @@ const theme = {
   secondaryTextColor: '#80868b',
   shadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
   sidebarSize: '300px',
-  // icon: {
-  //   color: '#5f6368',
-  // },
-  // placeHolderColor: '#80868b',
 };
 
 const initialState = {};

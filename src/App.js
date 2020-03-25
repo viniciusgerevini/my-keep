@@ -14,6 +14,7 @@ const AppWrapper = styled.div `
 const MainPaneWrapper = styled.div `
   width: auto;
   height: 100%;
+  overflow: hidden;
 
   @media(min-width: 750px) {
     margin-left: ${props => props.isSidebarOpen ? '300px' : '0px'};
