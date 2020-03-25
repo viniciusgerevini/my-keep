@@ -5,9 +5,10 @@ export const SideBarWrapper = styled.div `
   position: absolute;
   width: 300px;
   height: 100%;
-  background-color: #0f0;
+  background-color: #fff;
 `;
 
-export default function SideBar() {
-  return <SideBarWrapper/>; 
+export default function SideBar(props) {
+  console.log(props.isVisible);
+  return (<SideBarWrapper/>);
 }

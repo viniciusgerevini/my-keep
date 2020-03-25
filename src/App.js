@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 // import './App.css';
 
@@ -11,12 +11,29 @@ const AppWrapper = styled.div `
   overflow: auto;
 `;
 
+const MainPaneWrapper = styled.div `
+  width: auto;
+  height: 100%;
+
+  @media(min-width: 750px) {
+    margin-left: ${props => props.isSidebarOpen ? '300px' : '0px'};
+  }
+`;
+
 function App() {
+  const [ isSidebarVisible, setSidebarVisible ] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!isSidebarVisible);
+  };
+
   return (
     <AppWrapper>
-      <TopBar />
-      <SideBar/>
-      <MainPane/>
+      <TopBar onSidebarButtonClicked={toggleSidebar} />
+      { isSidebarVisible ? <SideBar /> : '' }
+      <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
+        <MainPane/>
+      </MainPaneWrapper>
     </AppWrapper>
   );
 }
