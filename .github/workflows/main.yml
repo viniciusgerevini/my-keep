@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -10,7 +8,7 @@ env:
   CI: true
 
 jobs:
-  Test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +17,6 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
-        npm run build
   
     - name: Run tests
       run: npm test -- --coverage
