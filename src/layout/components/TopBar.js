@@ -46,7 +46,7 @@ const AppLogoWrapper = styled.div `
 
 export default function TopBar(props) {
   return <TopBarWrapper>
-    <TopBarIconWrapper onClick= {() => props.onSidebarButtonClicked()}>
+    <TopBarIconWrapper aria-label="Sidebar Toggle Button" onClick= {() => props.onSidebarButtonClicked()}>
       <MdMenu />
     </TopBarIconWrapper>
     <AppLogoWrapper>

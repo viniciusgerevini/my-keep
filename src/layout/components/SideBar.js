@@ -9,5 +9,5 @@ export const SideBarWrapper = styled.div `
 `;
 
 export default function SideBar() {
-  return (<SideBarWrapper>hello</SideBarWrapper>);
+  return (<SideBarWrapper aria-label="Sidebar">hello</SideBarWrapper>);
 }
