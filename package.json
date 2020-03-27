@@ -21,6 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://viniciusgerevini.github.io/my-keep",
   "eslintConfig": {
     "extends": "react-app"
   },
