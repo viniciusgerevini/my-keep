@@ -8,7 +8,6 @@ export const SideBarWrapper = styled.div `
   background-color: ${props => props.theme.background};
 `;
 
-export default function SideBar(props) {
-  console.log(props.isVisible);
+export default function SideBar() {
   return (<SideBarWrapper>hello</SideBarWrapper>);
 }

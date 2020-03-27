@@ -32,7 +32,6 @@ const AppIconWrapper = styled.div `
   padding: 5px;
   background-color: #f1b003;
   color: #fff;
-  // background-color: #eee;
   margin: 0px 10px;
   border-radius: 5px;
 `;
