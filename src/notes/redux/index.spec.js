@@ -1,7 +1,7 @@
 import reducers, { createNote } from './index';
-import uuid from 'uuid/v4';
+import uuid from 'uuid';
 
-jest.mock('uuid/v4');
+jest.mock('uuid', () => ({ v4: jest.fn() }));
 
 describe('Note reducers', () => {
   it('inserts note with id', () => {
@@ -12,7 +12,7 @@ describe('Note reducers', () => {
       content: 'bla bla bla'
     };
 
-    uuid.mockReturnValue('note_id');
+    uuid.v4.mockReturnValue('note_id');
 
     const action = createNote({ title: note.title, content: note.content });
 

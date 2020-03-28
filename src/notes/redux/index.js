@@ -1,5 +1,5 @@
-import {createAction, createReducer} from "@reduxjs/toolkit";
-import uuid from 'uuid/v4';
+import { createAction, createReducer } from "@reduxjs/toolkit";
+import { v4 as uuid } from 'uuid';
 
 export const createNote = createAction('my-keep/notes/CREATE')
 
