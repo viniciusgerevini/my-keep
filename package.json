@@ -53,5 +53,8 @@
         "statements": 90
       }
     }
+  },
+  "devDependencies": {
+    "redux-mock-store": "^1.5.4"
   }
 }
