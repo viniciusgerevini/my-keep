@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
+import { createStore } from 'redux';
 import styled from 'styled-components';
-// import './App.css';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
+import { devToolsEnhancer } from 'redux-devtools-extension/logOnlyInProduction';
 
 import TopBar from './layout/components/TopBar';
 import SideBar from './layout/components/SideBar';
 import MainPane from './layout/components/MainPane';
+import theme from './layout/theme';
+import reducers from './reducers';
+
+const initialState = {};
+
+const store = createStore(reducers, initialState, devToolsEnhancer());
+
 
 const AppWrapper = styled.div `
   height: 100%;
@@ -29,13 +39,17 @@ function App() {
   };
 
   return (
-    <AppWrapper>
-      <TopBar onSidebarButtonClicked={toggleSidebar} />
-      { isSidebarVisible ? <SideBar /> : '' }
-      <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
-        <MainPane/>
-      </MainPaneWrapper>
-    </AppWrapper>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <AppWrapper>
+          <TopBar onSidebarButtonClicked={toggleSidebar} />
+          { isSidebarVisible ? <SideBar /> : '' }
+          <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
+            <MainPane/>
+          </MainPaneWrapper>
+        </AppWrapper>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

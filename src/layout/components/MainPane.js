@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import NoteBox from '../../notes/components/NoteBox';
+import TakeANoteBox from '../../notes/containers/TakeANoteBox';
 
 export const MainPaneWrapper = styled.div `
   width: auto;
@@ -11,6 +11,6 @@ export const MainPaneWrapper = styled.div `
 
 export default function MainPane() {
   return <MainPaneWrapper>
-    <NoteBox updateNote={(update)=> console.log(update)}/>
+    <TakeANoteBox/>
   </MainPaneWrapper>; 
 }
