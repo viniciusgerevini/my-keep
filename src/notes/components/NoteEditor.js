@@ -1,6 +1,7 @@
 import React, { useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import styled from 'styled-components';
-import {Editor, EditorState, convertToRaw} from 'draft-js';
+import { Editor, EditorState } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 import { UndoIcon, RedoIcon, ActionButton } from '../../styled';
 
 import 'draft-js/dist/Draft.css';
@@ -57,7 +58,7 @@ function NoteEditor(props, ref) {
       const titleContent = title.current.value;
       const update = {
         title: titleContent  === "" ? undefined : titleContent,
-        content: content.hasText() ? convertToRaw(content) : undefined
+        content: content.hasText() ? stateToHTML(content) : undefined
       };
 
       return update;
