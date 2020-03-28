@@ -1,9 +1,15 @@
 import {createAction, createReducer} from "@reduxjs/toolkit";
+import uuid from 'uuid/v4';
 
 export const createNote = createAction('my-keep/notes/CREATE')
 
 const createNoteReducer = (state, action) => {
-  return state.concat(action.payload);
+  const note = {
+    id: uuid(),
+    ...action.payload
+  };
+
+  return state.concat(note);
 };
 
 const noteReducers = createReducer([], {
