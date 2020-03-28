@@ -1,21 +1,13 @@
-export const CREATE = 'my-keep/notes/CREATE';
+import {createAction, createReducer} from "@reduxjs/toolkit";
 
-export const createNote = (payload) => ({
-  type: CREATE,
-  payload
-});
-
-const defaultReducer = state => state;
+export const createNote = createAction('my-keep/notes/CREATE')
 
 const createNoteReducer = (state, action) => {
   return state.concat(action.payload);
 };
 
-const reducers = {
-  [CREATE]: createNoteReducer
-};
-
-const noteReducers = (state = [], action) =>
-  (reducers[action.type] || defaultReducer)(state, action);
+const noteReducers = createReducer([], {
+  [createNote]: createNoteReducer
+});
 
 export default noteReducers;
