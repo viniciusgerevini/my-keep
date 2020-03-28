@@ -8,16 +8,8 @@ import { devToolsEnhancer } from 'redux-devtools-extension/logOnlyInProduction';
 import TopBar from './layout/components/TopBar';
 import SideBar from './layout/components/SideBar';
 import MainPane from './layout/components/MainPane';
+import theme from './layout/theme';
 import reducers from './reducers';
-
-const theme = {
-  background: '#fff',
-  secondaryBackground: 'rgba(60,64,67,0.08)',
-  textColor: '#202124',
-  secondaryTextColor: '#80868b',
-  shadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-  sidebarSize: '300px',
-};
 
 const initialState = {};
 
