@@ -13,10 +13,16 @@ const NoteWrapper = styled.div `
   line-height: 1.2em;
   overflow: hidden;
   word-wrap: break-word;
-  padding: 5px;
+  padding: 10px;
 
   &:hover {
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302),0 1px 3px 1px rgba(60,64,67,0.149);
+  }
+
+  [aria-label = "title"] {
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-bottom: 15px;
   }
 `;
 
