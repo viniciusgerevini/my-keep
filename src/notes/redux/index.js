@@ -9,7 +9,7 @@ const createNoteReducer = (state, action) => {
     ...action.payload
   };
 
-  return state.concat(note);
+  return [note].concat(state);
 };
 
 const noteReducers = createReducer([], {
