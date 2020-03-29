@@ -10,7 +10,7 @@ const GridWrapper = styled.div `
   grid-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
   grid-auto-rows: 180px;
-  margin-top: 20px;
+  margin-top: 50px;
 `;
 
 export default function NotesGrid(props) {
