@@ -1,19 +1,20 @@
 import { connect } from 'react-redux';
 import NotesGrid from '../components/NotesGrid';
+import { swapNotes } from '../redux';
+
 
 const mapStateToProps = (state, props) => ({
   notes: state.notes,
   ...props
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   updateNote: payload => {
-//     if (payload.title !== undefined || payload.content !== undefined)
-//       dispatch(createNote(payload))
-//   }
-// });
+const mapDispatchToProps = dispatch => ({
+  swapNotes: (src, dest) => {
+      dispatch(swapNotes({src, dest}));
+  }
+});
 
 export default connect(
   mapStateToProps,
-  // mapDispatchToProps
+  mapDispatchToProps
 )(NotesGrid);
