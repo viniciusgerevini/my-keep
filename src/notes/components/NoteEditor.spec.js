@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import draftJS, {EditorState, ContentState} from 'draft-js';
+import { EditorState, ContentState } from 'draft-js';
 import NoteEditor from './NoteEditor';
 
 describe('NoteEditor', () => {
@@ -90,10 +90,9 @@ describe('NoteEditor', () => {
 
   describe('#getNoteContent', () => {
     it('returns update', () => {
-      const originalConvertToRaw = draftJS.convertToRaw;
       const originalCreateEmpty = EditorState.createEmpty;
       let editorState;
-      draftJS.convertToRaw = jest.fn().mockReturnValue('fake content state');
+
       EditorState.createEmpty = jest.fn(() => {
         editorState = EditorState.createWithContent(ContentState.createFromText('hello'));
         return editorState;
@@ -106,11 +105,9 @@ describe('NoteEditor', () => {
 
       expect(noteEditorRef.current.getNoteContent()).toEqual({
         title: 'hey',
-        content: 'fake content state'
+        content: '<p>hello</p>'
       });
-      expect(draftJS.convertToRaw).toHaveBeenCalledWith(editorState.getCurrentContent());
 
-      draftJS.convertToRaw = originalConvertToRaw;
       EditorState.createEmpty = originalCreateEmpty;
     });
 
