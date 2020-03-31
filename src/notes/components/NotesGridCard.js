@@ -58,7 +58,7 @@ const NoteInnerWrapper = styled.div `
 
 const NoteContent = styled.div `
   flex-grow: 1;
-  max-height: 570px;
+  max-height: 480px;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
