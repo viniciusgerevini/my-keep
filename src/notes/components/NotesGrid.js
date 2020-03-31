@@ -15,17 +15,26 @@ const GridWrapper = styled.div `
 
 export default function NotesGrid(props) {
   const gridRef = useRef(null);
-  const { notes, swapNotes } = props;
+  const { notes, deleteNote, swapNotes } = props;
 
   useEffect(() => {
     const grid = gridRef.current;
     adjustGridItemsHeight(grid.children);
   });
- 
+
   return (
     <DndProvider backend={Backend}>
       <GridWrapper ref={gridRef}>
-        {notes.map((note, index) => <NoteCard key={note.id} index={index} swapNotes={swapNotes} className="grid-item" note={note}/>)}
+        {notes.map((note, index) =>
+          <NoteCard
+            key={note.id}
+            index={index}
+            swapNotes={swapNotes}
+            deleteNote={deleteNote}
+            className="grid-item"
+            note={note}
+          />
+        )}
       </GridWrapper>
     </DndProvider>
   );

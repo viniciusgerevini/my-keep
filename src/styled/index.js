@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MdUndo, MdRedo } from 'react-icons/md';
+import { FaEllipsisV } from 'react-icons/fa';
+
 
 export const IconWrapper = styled.div `
   display: inline-flex;
@@ -20,6 +22,7 @@ export const IconWrapper = styled.div `
 
 export const UndoIcon = (props) => <IconWrapper {...props}><MdUndo/></IconWrapper>;
 export const RedoIcon = (props) => <IconWrapper {...props}><MdRedo/></IconWrapper>;
+export const MenuBallsIcon = (props) => <IconWrapper {...props}><FaEllipsisV/></IconWrapper>;
 
 export const ActionButton = styled.button `
   color: ${props=> props.theme.textColor};

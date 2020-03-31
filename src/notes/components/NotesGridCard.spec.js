@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import NotesGridCard from '../components/NotesGridCard';
 import dnd from '../helpers/useDragAndDrop';
 
@@ -43,75 +43,43 @@ describe('NotesGridCard component', () => {
     expect(fakeSwapNotes).toHaveBeenCalledWith(secondNoteIndex, firstNoteIndex);
   })
 
-  it('changes item index when drag happens', () => {
+  it('shows menu when menu icon is pressed', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const fakeSwapNotes = jest.fn();
-    const firstNoteIndex = 1;
-    const secondNoteIndex = 2;
-    const fakeMonitor = { getClientOffset: () => ({}) };
-    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes} />);
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} />);
 
-    const { hover } = dnd.useDragAndDrop.mock.calls[0][1];
-    const targetItem = { index: secondNoteIndex }
-    hover(targetItem, fakeMonitor);
+    fireEvent.click(getByTitle('More'));
 
-    expect(targetItem.index).toEqual(firstNoteIndex);
+    expect(getByText("Delete note")).toBeInTheDocument();
   });
 
-  it('does not trigger swapNotes if target and source index are the same', () => {
+  it('toggles menu when clicked menu icon', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const fakeSwapNotes = jest.fn();
-    const firstNoteIndex = 1;
-    const secondNoteIndex = 1;
-    const fakeMonitor = { getClientOffset: () => ({}) };
-    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes} />);
+    const { getByTitle, queryByText } = render(<NotesGridCard note={note} />);
 
-    const { hover } = dnd.useDragAndDrop.mock.calls[0][1];
-    const targetItem = { index: secondNoteIndex }
-    hover(targetItem, fakeMonitor);
+    fireEvent.click(getByTitle('More'));
+    fireEvent.click(getByTitle('More'));
 
-    expect(fakeSwapNotes).not.toHaveBeenCalled();
+    expect(queryByText("Delete note")).toBeNull();
   });
 
-  it('does not trigger swapNotes if drag not activated downwards', () => {
+  it('hides menu when clicked outside element', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const fakeSwapNotes = jest.fn();
-    const firstNoteIndex = 1;
-    const secondNoteIndex = 2;
-    const fakeMonitor = { getClientOffset: () => ({ y: 1000 }) };
-    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes} />);
+    const { getByTitle, queryByText, container } = render(<NotesGridCard note={note} />);
 
-    const { hover } = dnd.useDragAndDrop.mock.calls[0][1];
-    const targetItem = { index: secondNoteIndex }
-    hover(targetItem, fakeMonitor);
+    fireEvent.click(getByTitle('More'));
+    fireEvent.mouseDown(container);
 
-    expect(fakeSwapNotes).not.toHaveBeenCalled();
+    expect(queryByText("Delete note")).toBeNull();
   });
 
-  it('does not trigger swapNotes if drag not activated upwards', () => {
+  it('triggers delete when menu delete is clicked', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const fakeSwapNotes = jest.fn();
-    const firstNoteIndex = 2;
-    const secondNoteIndex = 1;
-    const fakeMonitor = { getClientOffset: () => ({ y: -1000 }) };
-    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes} />);
+    const deleteNoteStub = jest.fn();
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} deleteNote={deleteNoteStub}/>);
 
-    const { hover } = dnd.useDragAndDrop.mock.calls[0][1];
-    const targetItem = { index: secondNoteIndex }
-    hover(targetItem, fakeMonitor);
+    fireEvent.click(getByTitle('More'));
+    fireEvent.click(getByText("Delete note"));
 
-    expect(fakeSwapNotes).not.toHaveBeenCalled();
+    expect(deleteNoteStub).toHaveBeenCalledWith(note.id);
   });
-
-  it('changes oppacity when item is being dragged', () => {
-    const note = { id: '123', title: 'hello', content: 'bla'};
-
-    dnd.useDragAndDrop.mockReturnValue({ isDragging: true });
-
-    const { container } = render(<NotesGridCard index={1} note={note} />);
-    const noteCard = container.firstChild;
-
-    expect(noteCard.style.opacity).toEqual("0");
-  });
-
 });
