@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import NotesGridCard from '../components/NotesGridCard';
 import dnd from '../helpers/useDragAndDrop';
 
@@ -114,4 +114,43 @@ describe('NotesGridCard component', () => {
     expect(noteCard.style.opacity).toEqual("0");
   });
 
+  it('shows menu when menu icon is pressed', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} />);
+
+    fireEvent.click(getByTitle('More'));
+
+    expect(getByText("Delete note")).toBeInTheDocument();
+  });
+
+  it('toggles menu when clicked menu icon', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const { getByTitle, queryByText } = render(<NotesGridCard note={note} />);
+
+    fireEvent.click(getByTitle('More'));
+    fireEvent.click(getByTitle('More'));
+
+    expect(queryByText("Delete note")).toBeNull();
+  });
+
+  it('hides menu when clicked outside element', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const { getByTitle, queryByText, container } = render(<NotesGridCard note={note} />);
+
+    fireEvent.click(getByTitle('More'));
+    fireEvent.mouseDown(container);
+
+    expect(queryByText("Delete note")).toBeNull();
+  });
+
+  it('triggers delete when menu delete is clicked', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const deleteNoteStub = jest.fn();
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} deleteNote={deleteNoteStub}/>);
+
+    fireEvent.click(getByTitle('More'));
+    fireEvent.click(getByText("Delete note"));
+
+    expect(deleteNoteStub).toHaveBeenCalledWith(note.id);
+  });
 });
