@@ -1,4 +1,4 @@
-import reducers, { createNote, swapNotes } from './index';
+import reducers, { createNote, swapNotes, deleteNote } from './index';
 import uuid from 'uuid';
 
 jest.mock('uuid', () => ({ v4: jest.fn() }));
@@ -19,7 +19,6 @@ describe('Note reducers', () => {
 
       expect(reducers(state, action)).toEqual([note]);
     });
-
 
     it('inserts new note as first item', () => {
       const state = [{
@@ -56,8 +55,30 @@ describe('Note reducers', () => {
       const state = [ note1, note2, note3 ];
 
       const action = swapNotes({ src: 0, dest: 2 });
-  
+
       expect(reducers(state, action)).toEqual([ note3, note2, note1 ]);
+    });
+
+  });
+
+  describe('#deleteNote', () => {
+    it('swaps notes positions', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla'
+      };
+      const note2 = {
+        id: 'note2',
+        title: 'some note2',
+        content: 'bla bla bla2'
+      };
+
+      const state = [ note1, note2 ];
+
+      const action = deleteNote(note2.id);
+
+      expect(reducers(state, action)).toEqual([ note1 ]);
     });
 
   });
@@ -67,5 +88,5 @@ describe('Note reducers', () => {
     const action = { type: 'some-unknown-action' };
     expect(reducers(state, action)).toEqual(state);
   });
-  
+
 });
