@@ -72,6 +72,15 @@ function NoteEditor(props, ref) {
     note && note.content ? EditorState.createWithContent(stateFromHTML(note.content)) : EditorState.createEmpty(),
   );
 
+  useEffect(() => {
+    window.requestAnimationFrame(() => {
+      if (editor.current && !hideEditor) {
+        editor.current.focus();
+      }
+    });
+
+  }, [hideEditor]);
+
   useImperativeHandle(ref, () => ({
     getNoteContent() {
       const content = editorState.getCurrentContent();
@@ -91,12 +100,6 @@ function NoteEditor(props, ref) {
     },
     element: wrapper.current,
   }));
-
-  useEffect(() => {
-    if (editor.current && !hideEditor) {
-      editor.current.focus();
-    }
-  }, [hideEditor]);
 
   const undo = () => {
     setEditorState(EditorState.undo(editorState));
