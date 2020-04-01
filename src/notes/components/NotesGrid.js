@@ -17,7 +17,12 @@ const GridWrapper = styled.div `
 export default function NotesGrid(props) {
   const [noteToEdit, setNoteToEdit] = useState(null);
   const gridRef = useRef(null);
-  const { notes, deleteNote, swapNotes } = props;
+  const {
+    notes,
+    deleteNote,
+    swapNotes,
+    updateNote
+  } = props;
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -47,7 +52,7 @@ export default function NotesGrid(props) {
           />
         )}
       </GridWrapper>
-      { noteToEdit ? <EditNoteModal note={noteToEdit} onModalClose={onModalClose}/> : null }
+      { noteToEdit ? <EditNoteModal note={noteToEdit} updateNote={updateNote} onModalClose={onModalClose}/> : null }
     </DndProvider>
   );
 }

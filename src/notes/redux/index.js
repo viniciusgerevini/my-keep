@@ -2,6 +2,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { v4 as uuid } from 'uuid';
 
 export const createNote = createAction('my-keep/notes/CREATE');
+export const updateNote = createAction('my-keep/notes/UPDATE');
 export const deleteNote = createAction('my-keep/notes/DELETE');
 export const swapNotes = createAction('my-keep/notes/SWAP_NOTES_POSITION');
 
@@ -12,6 +13,14 @@ const createNoteReducer = (state, action) => {
   };
 
   return [note].concat(state);
+};
+
+const updateNoteReducer = (state, action) => {
+  const note = state.find(n => n.id === action.payload.id);
+  if (note) {
+    Object.assign(note, action.payload);
+  }
+  return state;
 };
 
 const deleteNoteReducer = (state, action) => {
@@ -25,8 +34,9 @@ const swapNotesReducer = (state, action) => {
 
 const noteReducers = createReducer([], {
   [createNote]: createNoteReducer,
+  [updateNote]: updateNoteReducer,
   [deleteNote]: deleteNoteReducer,
-  [swapNotes]: swapNotesReducer
+  [swapNotes]: swapNotesReducer,
 });
 
 export default noteReducers;

@@ -1,5 +1,12 @@
-import reducers, { createNote, swapNotes, deleteNote } from './index';
 import uuid from 'uuid';
+
+import reducers, {
+  createNote,
+  swapNotes,
+  deleteNote,
+  updateNote
+} from './index';
+
 
 jest.mock('uuid', () => ({ v4: jest.fn() }));
 
@@ -32,6 +39,57 @@ describe('Note reducers', () => {
       const action = createNote({ title: 'some new note' });
 
       expect(reducers(state, action)[0].id).toEqual("new note");
+    });
+  });
+
+
+  describe('#updateNote', () => {
+    it('updates note', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla'
+      };
+      const note2 = {
+        id: 'note2',
+        title: 'some note2',
+        content: 'bla bla bla2'
+      };
+      const note2update = {
+        id: 'note2',
+        title: 'note2Update',
+        content: 'bla bla bla2'
+      };
+      const state = [ note1, note2 ];
+
+      const action = updateNote(note2update);
+
+      expect(reducers(state, action)).toEqual([ note1, note2update ]);
+    });
+
+    it('does nothing if note not found', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla'
+      };
+      const note2 = {
+        id: 'note2',
+        title: 'some note2',
+        content: 'bla bla bla2'
+      };
+
+      const noteWithWrongId = {
+        id: 'somenotenotfound',
+        title: 'note2Update',
+        content: 'bla bla bla2'
+      };
+
+      const state = [ note1, note2 ];
+
+      const action = updateNote(noteWithWrongId);
+
+      expect(reducers(state, action)).toEqual([ note1, note2 ]);
     });
   });
 
@@ -80,7 +138,6 @@ describe('Note reducers', () => {
 
       expect(reducers(state, action)).toEqual([ note1 ]);
     });
-
   });
 
   it('ignores unknown action', () => {
