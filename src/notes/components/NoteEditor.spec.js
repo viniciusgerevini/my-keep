@@ -12,6 +12,15 @@ describe('NoteEditor', () => {
     expect(getByLabelText(/actions/i)).toBeInTheDocument();
   });
 
+  it('starts editor with initial content', () => {
+    const noteEditorRef = React.createRef();
+    const note = { id: '123', title: 'hello', content: '<p>bla</p>'};
+
+    render(<NoteEditor ref={noteEditorRef} note={note}/>);
+
+    expect(noteEditorRef.current.getNoteContent()).toEqual(note);
+  });
+
   it('does not show title when hideTitle property provided', () => {
     const { getByLabelText, queryByLabelText } = render(<NoteEditor hideTitle={true} />);
 

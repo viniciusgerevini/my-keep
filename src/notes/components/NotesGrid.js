@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Backend from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 
 import NoteCard from './NotesGridCard';
+import EditNoteModal from './EditNoteModal';
 
 const GridWrapper = styled.div `
   display: grid;
@@ -14,6 +15,7 @@ const GridWrapper = styled.div `
 `;
 
 export default function NotesGrid(props) {
+  const [noteToEdit, setNoteToEdit] = useState(null);
   const gridRef = useRef(null);
   const { notes, deleteNote, swapNotes } = props;
 
@@ -21,6 +23,14 @@ export default function NotesGrid(props) {
     const grid = gridRef.current;
     adjustGridItemsHeight(grid.children);
   });
+
+  const openNote = (note) => {
+    setNoteToEdit(note);
+  };
+
+  const onModalClose = () => {
+    setNoteToEdit(null);
+  };
 
   return (
     <DndProvider backend={Backend}>
@@ -33,9 +43,11 @@ export default function NotesGrid(props) {
             deleteNote={deleteNote}
             className="grid-item"
             note={note}
+            onClick={() => openNote(note)}
           />
         )}
       </GridWrapper>
+      { noteToEdit ? <EditNoteModal note={noteToEdit} onModalClose={onModalClose}/> : null }
     </DndProvider>
   );
 }

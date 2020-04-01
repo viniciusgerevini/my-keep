@@ -2,6 +2,7 @@ import React, { useRef, useState, useImperativeHandle, forwardRef } from 'react'
 import styled from 'styled-components';
 import { Editor, EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import { stateFromHTML } from 'draft-js-import-html';
 import { UndoIcon, RedoIcon, ActionButton } from '../../styled';
 
 import 'draft-js/dist/Draft.css';
@@ -43,20 +44,29 @@ const Footer = styled.div `
 `;
 
 function NoteEditor(props, ref) {
-  const {hideTitle, hideFooter, closeAction, onClick} = props;
-  const [editorState, setEditorState] = useState(
-    EditorState.createEmpty(),
-  );
+  const {
+    hideTitle,
+    hideFooter,
+    closeAction,
+    onClick,
+    note,
+    ...extraProps
+  } = props;
 
   const editor = useRef(null);
   const wrapper = useRef(null);
   const title = useRef(null);
+
+  const [editorState, setEditorState] = useState(
+    note && note.content ? EditorState.createWithContent(stateFromHTML(note.content)) : EditorState.createEmpty(),
+  );
 
   useImperativeHandle(ref, () => ({
     getNoteContent() {
       const content = editorState.getCurrentContent();
       const titleContent = title.current.value;
       const update = {
+        ...(note ? { id: note.id } : {} ),
         title: titleContent  === "" ? undefined : titleContent,
         content: content.hasText() ? stateToHTML(content) : undefined
       };
@@ -80,8 +90,8 @@ function NoteEditor(props, ref) {
   };
 
   return (
-    <AddNoteWrapper ref={wrapper} onClick={onClick}>
-      {hideTitle ? '' : <TitleInput placeholder="Title" ref={title} aria-label="title"/>}
+    <AddNoteWrapper ref={wrapper} onClick={onClick} {...extraProps}>
+      {hideTitle ? '' : <TitleInput placeholder="Title" ref={title} defaultValue={note ? note.title : undefined} aria-label="title"/>}
 
       <Editor
         ref={editor}
