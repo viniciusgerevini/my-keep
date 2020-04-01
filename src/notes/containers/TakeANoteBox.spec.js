@@ -10,8 +10,8 @@ describe('TakeANoteBox container', () => {
 
   it('renders component', () => {
     const store = mockStore({});
-    const { getByLabelText } = render(<Provider store={store}><TakeANoteBox /></Provider>);
-    expect(getByLabelText(/content/i)).toBeInTheDocument();
+    const { getByText } = render(<Provider store={store}><TakeANoteBox /></Provider>);
+    expect(getByText(/Take a note/i)).toBeInTheDocument();
   });
 
   it('dispatches "create note" action when close triggered and at least one field has value', () => {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import NotesGrid from '../components/NotesGrid';
-import { deleteNote, swapNotes } from '../redux';
+import { updateNote, deleteNote, swapNotes } from '../redux';
 
 const mapStateToProps = (state, props) => ({
   notes: state.notes,
@@ -8,6 +8,9 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateNote: (note) => {
+    dispatch(updateNote(note));
+  },
   deleteNote: (id) => {
     dispatch(deleteNote(id));
   },

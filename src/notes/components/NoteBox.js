@@ -37,6 +37,7 @@ export default function AddNoteBox(props) {
       onClick={handleClick}
       closeAction={close}
       hideTitle={!isFocused}
+      hideEditor={!isFocused}
       hideFooter={!isFocused}
     />
   );

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import { render } from '@testing-library/react';
-import { deleteNote, swapNotes } from '../redux';
+import { render, act, fireEvent } from '@testing-library/react';
+import { updateNote, deleteNote, swapNotes } from '../redux';
 import HomeGrid from './HomeGrid';
-import NotesGridCard from '../components/NotesGridCard';
+import DraggableCard from '../components/DraggableCard';
 
-jest.mock('../components/NotesGridCard', () => {
+jest.mock('../components/DraggableCard', () => {
   const mockNote = jest.fn();
-  return mockNote.mockImplementation((props) => <div><div>{props.note.title}</div></div>);
+  return mockNote.mockImplementation((props) => <div><div>{props.children}</div></div>);
 });
 
 describe('HomeGrid container', () => {
@@ -38,7 +38,9 @@ describe('HomeGrid container', () => {
 
     render(<Provider store={store}><HomeGrid /></Provider>);
 
-    NotesGridCard.mock.calls[0][0].swapNotes(1, 2);
+    act(() => {
+      DraggableCard.mock.calls[0][0].onDrop(1, 2);
+    });
 
     const action = store.getActions()[0];
 
@@ -52,14 +54,34 @@ describe('HomeGrid container', () => {
       notes: [ note1 ]
     });
 
-    render(<Provider store={store}><HomeGrid /></Provider>);
+    const { getByLabelText, getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
 
-    NotesGridCard.mock.calls[0][0].deleteNote(1);
+    fireEvent.click(getByLabelText(/More actions/i));
+    fireEvent.click(getByText(/Delete note/i));
 
     const action = store.getActions()[0];
 
     expect(action.type).toEqual(deleteNote.toString());
-    expect(action.payload).toEqual(1);
+    expect(action.payload).toEqual(note1.id);
+  });
+
+  it('trigger update note', () => {
+    const note1 = { id: 'note1', title: 'some note' };
+    const store = mockStore({
+      notes: [ note1 ]
+    });
+    const { getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+
+    act(() => {
+      DraggableCard.mock.calls[0][0].onClick();
+    });
+
+    fireEvent.click(getByText(/close/i));
+
+    const action = store.getActions()[0];
+
+    expect(action.type).toEqual(updateNote.toString());
+    expect(action.payload).toEqual(note1);
   });
 });
 

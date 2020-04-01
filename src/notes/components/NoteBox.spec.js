@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, act, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import NoteBox from './NoteBox';
 
-describe('NoteEditor', () => {
-  it('renders content field by default', () => {
-    const { getByLabelText } = render(<NoteBox />);
-    expect(getByLabelText(/content/i)).toBeInTheDocument();
+describe('NoteBox component', () => {
+  it('renders placeholder by default', () => {
+    const { getByText } = render(<NoteBox />);
+    expect(getByText(/Take a note/i)).toBeInTheDocument();
   });
 
   it('does not render title and actions by default', () => {
