@@ -53,6 +53,12 @@ const EditorPlaceholder = styled.div `
   cursor: text;
 `;
 
+const EditorContainer = styled.div `
+  max-height: 70vh;
+  overflow: auto;
+  padding: 5px 0px;
+`
+
 function NoteEditor(props, ref) {
   const {
     hideTitle,
@@ -114,13 +120,15 @@ function NoteEditor(props, ref) {
       {hideTitle ? '' : <TitleInput placeholder="Title" ref={title} defaultValue={note ? note.title : undefined} aria-label="title"/>}
 
       { hideEditor ? <EditorPlaceholder>{'Take a note...'}</EditorPlaceholder>:
-        <Editor
-          ref={editor}
-          ariaLabel="content"
-          placeholder="Take a note..."
-          editorState={editorState}
-          onChange={setEditorState}
-        />
+        <EditorContainer>
+          <Editor
+            ref={editor}
+            ariaLabel="content"
+            placeholder="Take a note..."
+            editorState={editorState}
+            onChange={setEditorState}
+          />
+        </EditorContainer>
       }
 
       {hideFooter ? '' :
