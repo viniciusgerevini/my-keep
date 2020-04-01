@@ -1,4 +1,9 @@
-import React, { useRef, useState, useImperativeHandle, forwardRef } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useImperativeHandle,
+  forwardRef } from 'react';
 import styled from 'styled-components';
 import { Editor, EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
@@ -43,9 +48,15 @@ const Footer = styled.div `
   margin-top: 20px;
 `;
 
+const EditorPlaceholder = styled.div `
+  color: ${props => props.theme.secondaryTextColor};
+  cursor: text;
+`;
+
 function NoteEditor(props, ref) {
   const {
     hideTitle,
+    hideEditor,
     hideFooter,
     closeAction,
     onClick,
@@ -78,8 +89,14 @@ function NoteEditor(props, ref) {
       setEditorState(EditorState.createEmpty());
       title.current.value = '';
     },
-    element: wrapper.current
+    element: wrapper.current,
   }));
+
+  useEffect(() => {
+    if (editor.current && !hideEditor) {
+      editor.current.focus();
+    }
+  }, [hideEditor]);
 
   const undo = () => {
     setEditorState(EditorState.undo(editorState));
@@ -93,13 +110,15 @@ function NoteEditor(props, ref) {
     <AddNoteWrapper ref={wrapper} onClick={onClick} {...extraProps}>
       {hideTitle ? '' : <TitleInput placeholder="Title" ref={title} defaultValue={note ? note.title : undefined} aria-label="title"/>}
 
-      <Editor
-        ref={editor}
-        ariaLabel="content"
-        placeholder="Take a note..."
-        editorState={editorState}
-        onChange={setEditorState}
-      />
+      { hideEditor ? <EditorPlaceholder>{'Take a note...'}</EditorPlaceholder>:
+        <Editor
+          ref={editor}
+          ariaLabel="content"
+          placeholder="Take a note..."
+          editorState={editorState}
+          onChange={setEditorState}
+        />
+      }
 
       {hideFooter ? '' :
         <Footer>
