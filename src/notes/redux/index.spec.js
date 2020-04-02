@@ -4,16 +4,23 @@ import reducers, {
   createNote,
   swapNotes,
   deleteNote,
-  updateNote
+  updateNote,
+  createEmptyState
 } from './index';
 
 
 jest.mock('uuid', () => ({ v4: jest.fn() }));
 
 describe('Note reducers', () => {
+
+  const createTestState = (notes = []) => {
+    const state = createEmptyState();
+    return state.concat(notes);
+  };
+
   describe('#createNote', function() {
     it('inserts note with id', () => {
-      const state = [];
+      const state = createTestState();
       const note = {
         id: 'note_id',
         title: 'some note',
@@ -28,11 +35,11 @@ describe('Note reducers', () => {
     });
 
     it('inserts new note as first item', () => {
-      const state = [{
+      const state = createTestState([{
         id: 'old note',
         title: 'some note',
         content: 'bla bla bla'
-      }];
+      }]);
 
       uuid.v4.mockReturnValue('new note');
 
@@ -60,11 +67,11 @@ describe('Note reducers', () => {
         title: 'note2Update',
         content: 'bla bla bla2'
       };
-      const state = [ note1, note2 ];
+      const state = createTestState([ note1, note2 ]);
 
       const action = updateNote(note2update);
 
-      expect(reducers(state, action)).toEqual([ note1, note2update ]);
+      expect(reducers(state, action)).toEqual(createTestState([ note1, note2update ]));
     });
 
     it('does nothing if note not found', () => {
@@ -85,11 +92,11 @@ describe('Note reducers', () => {
         content: 'bla bla bla2'
       };
 
-      const state = [ note1, note2 ];
+      const state = createTestState([ note1, note2 ]);
 
       const action = updateNote(noteWithWrongId);
 
-      expect(reducers(state, action)).toEqual([ note1, note2 ]);
+      expect(reducers(state, action)).toEqual(createTestState([ note1, note2 ]));
     });
   });
 
@@ -110,11 +117,11 @@ describe('Note reducers', () => {
         title: 'some note3',
         content: 'bla bla bla3'
       };
-      const state = [ note1, note2, note3 ];
+      const state = createTestState([ note1, note2, note3 ]);
 
       const action = swapNotes({ src: 0, dest: 2 });
 
-      expect(reducers(state, action)).toEqual([ note3, note2, note1 ]);
+      expect(reducers(state, action)).toEqual(createTestState([ note3, note2, note1 ]));
     });
 
   });
@@ -132,16 +139,16 @@ describe('Note reducers', () => {
         content: 'bla bla bla2'
       };
 
-      const state = [ note1, note2 ];
+      const state = createTestState([ note1, note2 ]);
 
       const action = deleteNote(note2.id);
 
-      expect(reducers(state, action)).toEqual([ note1 ]);
+      expect(reducers(state, action)).toEqual(createTestState([ note1 ]));
     });
   });
 
   it('ignores unknown action', () => {
-    const state = [];
+    const state = createTestState();
     const action = { type: 'some-unknown-action' };
     expect(reducers(state, action)).toEqual(state);
   });

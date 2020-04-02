@@ -2,7 +2,13 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { render, act, fireEvent } from '@testing-library/react';
-import { createNote, updateNote, deleteNote, swapNotes } from '../redux';
+import {
+  createNote,
+  updateNote,
+  deleteNote,
+  swapNotes,
+  createEmptyState,
+} from '../redux';
 import HomeGrid from './HomeGrid';
 import DraggableCard from '../components/DraggableCard';
 
@@ -14,6 +20,13 @@ jest.mock('../components/DraggableCard', () => {
 describe('HomeGrid container', () => {
   const mockStore = configureStore();
 
+  const createMockStore = (notes = []) => {
+    const store = mockStore({
+      notes: createEmptyState().concat(notes)
+    });
+    return store;
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -21,9 +34,7 @@ describe('HomeGrid container', () => {
   it('renders notes from state', () => {
     const note1 = { id: 'note1', title: 'some note' };
     const note2 = { id: 'note2', title: 'some other note' };
-    const store = mockStore({
-      notes: [ note1, note2 ]
-    });
+    const store = createMockStore([ note1, note2 ]);
     const { getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
 
     expect(getByText(note1.title)).toBeInTheDocument();
@@ -32,9 +43,7 @@ describe('HomeGrid container', () => {
 
   it('trigger swap notes', () => {
     const note1 = { id: 'note1', title: 'some note' };
-    const store = mockStore({
-      notes: [ note1 ]
-    });
+    const store = createMockStore([ note1 ]);
 
     render(<Provider store={store}><HomeGrid /></Provider>);
 
@@ -50,9 +59,7 @@ describe('HomeGrid container', () => {
 
   it('trigger delete note', () => {
     const note1 = { id: 'note1', title: 'some note' };
-    const store = mockStore({
-      notes: [ note1 ]
-    });
+    const store = createMockStore([ note1 ]);
 
     const { getByLabelText, getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
 
@@ -67,9 +74,7 @@ describe('HomeGrid container', () => {
 
   it('trigger update note', () => {
     const note1 = { id: 'note1', title: 'some note' };
-    const store = mockStore({
-      notes: [ note1 ]
-    });
+    const store = createMockStore([ note1 ]);
     const { getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
 
     act(() => {
@@ -86,9 +91,7 @@ describe('HomeGrid container', () => {
 
   it('triggers create note with note info', () => {
     const note1 = { id: 'note1', title: 'some note', content: 'some content' };
-    const store = mockStore({
-      notes: [ note1 ]
-    });
+    const store = createMockStore([ note1 ]);
 
     const { getByLabelText, getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
 

@@ -6,6 +6,10 @@ export const updateNote = createAction('my-keep/notes/UPDATE');
 export const deleteNote = createAction('my-keep/notes/DELETE');
 export const swapNotes = createAction('my-keep/notes/SWAP_NOTES_POSITION');
 
+export function createEmptyState() {
+  return [];
+}
+
 const createNoteReducer = (state, action) => {
   const note = {
     id: uuid(),
@@ -32,7 +36,7 @@ const swapNotesReducer = (state, action) => {
   return state;
 };
 
-const noteReducers = createReducer([], {
+const noteReducers = createReducer(createEmptyState(), {
   [createNote]: createNoteReducer,
   [updateNote]: updateNoteReducer,
   [deleteNote]: deleteNoteReducer,
