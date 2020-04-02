@@ -35,7 +35,7 @@ const ModalBackground = styled.div `
   top: 0px;
   width: 100%;
   height: 100%;
-  z-index: 300px;
+  z-index: 9999px;
   background-color: ${props => props.theme.background};
   opacity: 0.7;
 `;
@@ -49,9 +49,10 @@ const ModalWrapper = styled.div `
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 400;
 
   .modal-editor {
     position: relative;
-    z-index: 301;
+    z-index: 9999;
   }
 `;

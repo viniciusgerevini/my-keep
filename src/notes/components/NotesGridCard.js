@@ -2,7 +2,11 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { MenuBallsIcon } from '../../styled';
+import {
+  MenuBallsIcon,
+  PinIcon,
+  UnpinIcon
+} from '../../styled';
 import HoverMenu from '../../layout/components/HoverMenu';
 import { useClickOutside } from '../../layout/helpers/useClickOutside';
 import DraggableCard from './DraggableCard';
@@ -10,10 +14,12 @@ import DraggableCard from './DraggableCard';
 export default function NoteCard(props) {
   const {
     note,
-    index,
+    togglePinNote,
     swapNotes,
     duplicateNote,
-    deleteNote, ...p } = props;
+    deleteNote,
+    ...p
+  } = props;
   const [isMenuVisible, setMenuVisible] = useState(false);
   const hoverMenuRef = useRef(null);
 
@@ -43,8 +49,13 @@ export default function NoteCard(props) {
     setMenuVisible(!isMenuVisible);
   };
 
+  const togglePin = (e) => {
+    e.stopPropagation();
+    togglePinNote(note.id);
+  };
+
   return (
-    <DraggableCard {...p} index={index} onDrop={swapNotes} className="note-parent">
+    <DraggableCard {...p} item={note} onDrop={swapNotes} className="note-parent">
       <NoteInnerWrapper>
         {note.title ?
           <div aria-label="title">{note.title}</div>
@@ -60,15 +71,23 @@ export default function NoteCard(props) {
         />
       </NoteActions>
       { isMenuVisible ? <HoverMenu ref={hoverMenuRef} items={menuActions}/> : undefined }
+      { togglePinNote ?
+          <Pin role="button" onClick={togglePin}>
+            { note.isPinned ?
+                <UnpinIcon aria-label="Unpin note" title="Unpin note"/>
+              : <PinIcon aria-label="Pin note" title="Pin note"/>
+            }
+          </Pin>
+        : undefined }
     </DraggableCard>
   );
 };
 
 NoteCard.propTypes = {
   note: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
   swapNotes: PropTypes.func.isRequired,
   deleteNote: PropTypes.func,
+  togglePinNote: PropTypes.func,
 };
 
 
@@ -93,6 +112,19 @@ const NoteActions = styled.div `
   display: flex;
   flex-direction: row-reverse;
   padding: 5px 0px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  .note-parent:hover & {
+    opacity: 1;
+  }
+`;
+
+const Pin = styled.div `
+  position: absolute;
+  top: 1px;
+  right: 0px;
+  font-size: 1.3em;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 

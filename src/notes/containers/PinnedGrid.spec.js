@@ -7,10 +7,10 @@ import {
   updateNote,
   deleteNote,
   swapNotes,
-  pinNote,
+  unpinNote,
   createEmptyState,
 } from '../redux';
-import HomeGrid from './HomeGrid';
+import PinnedGrid from './PinnedGrid';
 import DraggableCard from '../components/DraggableCard';
 
 jest.mock('../components/DraggableCard', () => {
@@ -18,7 +18,7 @@ jest.mock('../components/DraggableCard', () => {
   return mockNote.mockImplementation((props) => <div><div>{props.children}</div></div>);
 });
 
-describe('HomeGrid container', () => {
+describe('PinnedGrid container', () => {
   const mockStore = configureStore();
 
   const createMockStore = (notes = []) => {
@@ -32,41 +32,34 @@ describe('HomeGrid container', () => {
     jest.clearAllMocks();
   });
 
-  it('renders notes from state', () => {
-    const note1 = { id: 'note1', title: 'some note' };
+  it('renders only pinned notes', () => {
+    const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const note2 = { id: 'note2', title: 'some other note' };
-    const store = createMockStore([ note1, note2 ]);
-    const { getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+    const note3 = { id: 'note3', title: 'yet another note', isPinned: true };
+    const store = createMockStore([ note1, note2, note3 ]);
+    const { getByText, queryByText } = render(<Provider store={store}><PinnedGrid /></Provider>);
 
     expect(getByText(note1.title)).toBeInTheDocument();
-    expect(getByText(note2.title)).toBeInTheDocument();
+    expect(queryByText(note2.title)).toBeNull();
+    expect(getByText(note3.title)).toBeInTheDocument();
   });
 
   it('renders notes from state sorted by reversed sortOrder', () => {
-    const note1 = { id: 'note1', title: 'some note', sortOrder: 1 };
-    const note2 = { id: 'note2', title: 'some other note', sortOrder: 2 };
+    const note1 = { id: 'note1', title: 'some note', isPinned: true, sortOrder: 1 };
+    const note2 = { id: 'note2', title: 'some other note', isPinned:true, sortOrder: 2 };
     const store = createMockStore([ note1, note2 ]);
-    render(<Provider store={store}><HomeGrid /></Provider>);
+    render(<Provider store={store}><PinnedGrid /></Provider>);
 
     expect(DraggableCard.mock.calls[0][0].item).toEqual(note2);
     expect(DraggableCard.mock.calls[1][0].item).toEqual(note1);
   });
 
-  it('does not render pinned notes', () => {
-    const note1 = { id: 'note1', title: 'some note', isPinned: true };
-    const note2 = { id: 'note2', title: 'some other note' };
-    const store = createMockStore([ note1, note2 ]);
-    const { getByText, queryByText } = render(<Provider store={store}><HomeGrid /></Provider>);
-
-    expect(queryByText(note1.title)).toBeNull();
-    expect(getByText(note2.title)).toBeInTheDocument();
-  });
 
   it('trigger swap notes', () => {
-    const note1 = { id: 'note1', title: 'some note' };
+    const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const store = createMockStore([ note1 ]);
 
-    render(<Provider store={store}><HomeGrid /></Provider>);
+    render(<Provider store={store}><PinnedGrid /></Provider>);
 
     act(() => {
       DraggableCard.mock.calls[0][0].onDrop(1, 2);
@@ -79,10 +72,10 @@ describe('HomeGrid container', () => {
   });
 
   it('trigger delete note', () => {
-    const note1 = { id: 'note1', title: 'some note' };
+    const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const store = createMockStore([ note1 ]);
 
-    const { getByLabelText, getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+    const { getByLabelText, getByText } = render(<Provider store={store}><PinnedGrid /></Provider>);
 
     fireEvent.click(getByLabelText(/More actions/i));
     fireEvent.click(getByText(/Delete note/i));
@@ -94,9 +87,9 @@ describe('HomeGrid container', () => {
   });
 
   it('trigger update note', () => {
-    const note1 = { id: 'note1', title: 'some note' };
+    const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const store = createMockStore([ note1 ]);
-    const { getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+    const { getByText } = render(<Provider store={store}><PinnedGrid /></Provider>);
 
     act(() => {
       DraggableCard.mock.calls[0][0].onClick();
@@ -107,14 +100,14 @@ describe('HomeGrid container', () => {
     const action = store.getActions()[0];
 
     expect(action.type).toEqual(updateNote.toString());
-    expect(action.payload).toEqual(note1);
+    expect(action.payload).toEqual({ id: note1.id, title: note1.title });
   });
 
-  it('triggers create note with note info', () => {
-    const note1 = { id: 'note1', title: 'some note', content: 'some content' };
+  it('triggers create note with note info when duplicate', () => {
+    const note1 = { id: 'note1', title: 'some note', content: 'some content', isPinned: true };
     const store = createMockStore([ note1 ]);
 
-    const { getByLabelText, getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+    const { getByLabelText, getByText } = render(<Provider store={store}><PinnedGrid /></Provider>);
 
     fireEvent.click(getByLabelText(/More actions/i));
     fireEvent.click(getByText(/Duplicate note/i));
@@ -122,20 +115,20 @@ describe('HomeGrid container', () => {
     const action = store.getActions()[0];
 
     expect(action.type).toEqual(createNote.toString());
-    expect(action.payload).toEqual({ title: note1.title, content: note1.content });
+    expect(action.payload).toEqual({ title: note1.title, content: note1.content, isPinned: true });
   });
 
-  it('trigger pin note', () => {
-    const note1 = { id: 'note1', title: 'some note' };
+  it('trigger unpin note', () => {
+    const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const store = createMockStore([ note1 ]);
 
-    const { getByLabelText } = render(<Provider store={store}><HomeGrid /></Provider>);
+    const { getByLabelText } = render(<Provider store={store}><PinnedGrid /></Provider>);
 
-    fireEvent.click(getByLabelText(/Pin note/i));
+    fireEvent.click(getByLabelText(/Unpin note/i));
 
     const action = store.getActions()[0];
 
-    expect(action.type).toEqual(pinNote.toString());
+    expect(action.type).toEqual(unpinNote.toString());
     expect(action.payload).toEqual(note1.id);
   });
 });

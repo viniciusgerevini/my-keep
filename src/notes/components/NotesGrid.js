@@ -24,6 +24,7 @@ export default function NotesGrid(props) {
     swapNotes,
     updateNote,
     duplicateNote,
+    pinNoteAction,
   } = props;
 
   useEffect(() => {
@@ -42,13 +43,13 @@ export default function NotesGrid(props) {
   return (
     <DndProvider backend={Backend}>
       <GridWrapper ref={gridRef}>
-        {notes.map((note, index) =>
+        {notes.map((note) =>
           <NoteCard
             key={note.id}
-            index={index}
             swapNotes={swapNotes}
             deleteNote={deleteNote}
             duplicateNote={duplicateNote}
+            togglePinNote={pinNoteAction}
             className="grid-item"
             note={note}
             onClick={() => openNote(note)}
@@ -65,7 +66,8 @@ NotesGrid.propTypes = {
   deleteNote: PropTypes.func.isRequired,
   duplicateNote: PropTypes.func.isRequired,
   swapNotes: PropTypes.func.isRequired,
-  updateNote: PropTypes.func.isRequired
+  updateNote: PropTypes.func.isRequired,
+  pinNoteAction: PropTypes.func
 };
 
 const adjustGridItemsHeight = (items) => {

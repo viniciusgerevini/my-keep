@@ -5,6 +5,8 @@ export const createNote = createAction('my-keep/notes/CREATE');
 export const updateNote = createAction('my-keep/notes/UPDATE');
 export const deleteNote = createAction('my-keep/notes/DELETE');
 export const swapNotes = createAction('my-keep/notes/SWAP_NOTES_POSITION');
+export const pinNote = createAction('my-keep/notes/PIN_NOTE');
+export const unpinNote = createAction('my-keep/notes/UNPIN_NOTE');
 
 export function createEmptyState() {
   return [];
@@ -13,10 +15,11 @@ export function createEmptyState() {
 const createNoteReducer = (state, action) => {
   const note = {
     id: uuid(),
-    ...action.payload
+    ...action.payload,
+    sortOrder: Date.now()
   };
 
-  return [note].concat(state);
+  return state.concat(note);
 };
 
 const updateNoteReducer = (state, action) => {
@@ -32,7 +35,25 @@ const deleteNoteReducer = (state, action) => {
 };
 
 const swapNotesReducer = (state, action) => {
-  [state[action.payload.src], state[action.payload.dest]] = [state[action.payload.dest], state[action.payload.src]];
+  const note1 = state.find(n => n.id === action.payload.src);
+  const note2 = state.find(n => n.id === action.payload.dest);
+
+  const firstOrder = note1.sortOrder;
+  note1.sortOrder = note2.sortOrder;
+  note2.sortOrder = firstOrder;
+
+  return state;
+};
+
+const pinNoteReducer = (state, action) => {
+  const note = state.find(n => n.id === action.payload);
+  note.isPinned = true;
+  return state;
+};
+
+const unpinNoteReducer = (state, action) => {
+  const note = state.find(n => n.id === action.payload);
+  note.isPinned = false;
   return state;
 };
 
@@ -41,6 +62,8 @@ const noteReducers = createReducer(createEmptyState(), {
   [updateNote]: updateNoteReducer,
   [deleteNote]: deleteNoteReducer,
   [swapNotes]: swapNotesReducer,
+  [pinNote]: pinNoteReducer,
+  [unpinNote]: unpinNoteReducer,
 });
 
 export default noteReducers;

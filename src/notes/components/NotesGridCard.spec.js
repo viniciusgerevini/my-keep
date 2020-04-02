@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import NotesGridCard from '../components/NotesGridCard';
+
 import dnd from '../helpers/useDragAndDrop';
 
 jest.mock('../helpers/useDragAndDrop', () => {
@@ -32,16 +33,15 @@ describe('NotesGridCard component', () => {
   });
 
   it('calls swapNotes when drag happens', () => {
-    const note = { id: '123', title: 'hello', content: 'bla'};
-    const firstNoteIndex = 1;
-    const secondNoteIndex = 2;
+    const note = { id: '123', title: 'hello', content: 'bla', sortOrder: 2 };
+    const note2 = { id: 'abc', title: 'hello2', content: 'bla2', sortOrder: 3 };
     const fakeMonitor = { getClientOffset: () => ({}) };
-    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes}/>);
+    render(<NotesGridCard note={note} swapNotes={fakeSwapNotes}/>);
 
     const { hover } = dnd.useDragAndDrop.mock.calls[0][1];
-    hover({ index: secondNoteIndex }, fakeMonitor);
+    hover(note2, fakeMonitor);
 
-    expect(fakeSwapNotes).toHaveBeenCalledWith(secondNoteIndex, firstNoteIndex);
+    expect(fakeSwapNotes).toHaveBeenCalledWith(note2.id, note.id);
   })
 
   it('shows menu when menu icon is pressed', () => {
@@ -99,5 +99,49 @@ describe('NotesGridCard component', () => {
     fireEvent.click(getByText("Duplicate note"));
 
     expect(duplicateNoteStub).toHaveBeenCalledWith(note);
+  });
+
+  it('does not show pin icon if pinNote action not provided', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const { queryByLabelText } = render(
+      <NotesGridCard
+        note={note}
+        index={0}
+        swapNotes={fakeSwapNotes}/>
+    );
+
+    expect(queryByLabelText(/Pin note/i)).toBeNull();
+  });
+
+  it('triggers pin note when pin icon is clicked', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const pinNoteStub = jest.fn();
+    const { getByLabelText } = render(
+      <NotesGridCard
+        note={note}
+        index={0}
+        togglePinNote={pinNoteStub}
+        swapNotes={fakeSwapNotes}/>
+    );
+
+    fireEvent.click(getByLabelText(/Pin note/i));
+
+    expect(pinNoteStub).toHaveBeenCalledWith(note.id);
+  });
+
+  it('shows unpin not when note is pinned', () => {
+    const note = { id: '123', title: 'hello', content: 'bla', isPinned: true };
+    const pinNoteStub = jest.fn();
+    const { getByLabelText } = render(
+      <NotesGridCard
+        note={note}
+        index={0}
+        togglePinNote={pinNoteStub}
+        swapNotes={fakeSwapNotes}/>
+    );
+
+    fireEvent.click(getByLabelText(/Unpin note/i));
+
+    expect(pinNoteStub).toHaveBeenCalledWith(note.id);
   });
 });
