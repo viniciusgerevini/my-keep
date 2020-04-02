@@ -55,7 +55,7 @@ export default function NoteCard(props) {
 NoteCard.propTypes = {
   note: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  swapNotes: PropTypes.func,
+  swapNotes: PropTypes.func.isRequired,
   deleteNote: PropTypes.func,
 };
 

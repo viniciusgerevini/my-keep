@@ -10,13 +10,15 @@ jest.mock('../helpers/useDragAndDrop', () => {
 });
 
 describe('NotesGridCard component', () => {
+  const fakeSwapNotes = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('renders component', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByText } = render(<NotesGridCard note={note} index={0} />);
+    const { getByText } = render(<NotesGridCard note={note} index={0} swapNotes={fakeSwapNotes}/>);
 
     expect(getByText(note.title)).toBeInTheDocument();
     expect(getByText(note.content)).toBeInTheDocument();
@@ -24,18 +26,17 @@ describe('NotesGridCard component', () => {
 
   it('renders without title', () => {
     const note = { id: '123', content: 'bla'};
-    const { getByText } = render(<NotesGridCard note={note} index={0} />);
+    const { getByText } = render(<NotesGridCard note={note} index={0} swapNotes={fakeSwapNotes}/>);
 
     expect(getByText(note.content)).toBeInTheDocument();
   });
 
   it('calls swapNotes when drag happens', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const fakeSwapNotes = jest.fn();
     const firstNoteIndex = 1;
     const secondNoteIndex = 2;
     const fakeMonitor = { getClientOffset: () => ({}) };
-    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes} />);
+    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes}/>);
 
     const { hover } = dnd.useDragAndDrop.mock.calls[0][1];
     hover({ index: secondNoteIndex }, fakeMonitor);
@@ -45,7 +46,7 @@ describe('NotesGridCard component', () => {
 
   it('shows menu when menu icon is pressed', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByTitle, getByText } = render(<NotesGridCard note={note} index={0}/>);
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} index={0} swapNotes={fakeSwapNotes}/>);
 
     fireEvent.click(getByTitle('More'));
 
@@ -54,7 +55,7 @@ describe('NotesGridCard component', () => {
 
   it('toggles menu when clicked menu icon', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByTitle, queryByText } = render(<NotesGridCard note={note} index={0} />);
+    const { getByTitle, queryByText } = render(<NotesGridCard note={note} index={0} swapNotes={fakeSwapNotes}/>);
 
     fireEvent.click(getByTitle('More'));
     fireEvent.click(getByTitle('More'));
@@ -64,7 +65,7 @@ describe('NotesGridCard component', () => {
 
   it('hides menu when clicked outside element', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByTitle, queryByText, container } = render(<NotesGridCard note={note} index={0} />);
+    const { getByTitle, queryByText, container } = render(<NotesGridCard note={note} index={0} swapNotes={fakeSwapNotes}/>);
 
     fireEvent.click(getByTitle('More'));
     fireEvent.mouseDown(container);
@@ -75,7 +76,7 @@ describe('NotesGridCard component', () => {
   it('triggers delete when menu delete is clicked', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
     const deleteNoteStub = jest.fn();
-    const { getByTitle, getByText } = render(<NotesGridCard note={note} index={0} deleteNote={deleteNoteStub}/>);
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} index={0} deleteNote={deleteNoteStub} swapNotes={fakeSwapNotes}/>);
 
     fireEvent.click(getByTitle('More'));
     fireEvent.click(getByText("Delete note"));

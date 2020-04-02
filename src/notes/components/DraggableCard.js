@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { useDragAndDrop } from '../helpers/useDragAndDrop';
@@ -19,6 +20,12 @@ export default function DraggableCard(props) {
         {children}
     </NoteWrapper>
   );
+};
+
+DraggableCard.propTypes = {
+  index: PropTypes.number.isRequired,
+  onDrop: PropTypes.func.isRequired,
+  children: PropTypes.node
 };
 
 const createDragHoverCallback = (ref, currentElementIndex, onDrop) => {
