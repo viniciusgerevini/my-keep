@@ -3,7 +3,7 @@ import NotesGrid from '../components/NotesGrid';
 import { createNote, updateNote, deleteNote, swapNotes } from '../redux';
 
 const mapStateToProps = (state, props) => ({
-  notes: state.notes,
+  notes: state.notes.notes,
   ...props
 });
 

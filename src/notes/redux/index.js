@@ -7,7 +7,10 @@ export const deleteNote = createAction('my-keep/notes/DELETE');
 export const swapNotes = createAction('my-keep/notes/SWAP_NOTES_POSITION');
 
 export function createEmptyState() {
-  return [];
+  return {
+    notes: [],
+    pinnedNotes: []
+  };
 }
 
 const createNoteReducer = (state, action) => {
@@ -16,11 +19,13 @@ const createNoteReducer = (state, action) => {
     ...action.payload
   };
 
-  return [note].concat(state);
+  state.notes = [note].concat(state.notes);
+
+  return state;
 };
 
 const updateNoteReducer = (state, action) => {
-  const note = state.find(n => n.id === action.payload.id);
+  const note = state.notes.find(n => n.id === action.payload.id);
   if (note) {
     Object.assign(note, action.payload);
   }
@@ -28,11 +33,12 @@ const updateNoteReducer = (state, action) => {
 };
 
 const deleteNoteReducer = (state, action) => {
-  return state.filter( note => note.id !== action.payload)
+  state.notes = state.notes.filter( note => note.id !== action.payload);
+  return state;
 };
 
 const swapNotesReducer = (state, action) => {
-  [state[action.payload.src], state[action.payload.dest]] = [state[action.payload.dest], state[action.payload.src]];
+  [state.notes[action.payload.src], state.notes[action.payload.dest]] = [state.notes[action.payload.dest], state.notes[action.payload.src]];
   return state;
 };
 
