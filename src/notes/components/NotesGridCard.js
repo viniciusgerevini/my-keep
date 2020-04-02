@@ -14,7 +14,6 @@ import DraggableCard from './DraggableCard';
 export default function NoteCard(props) {
   const {
     note,
-    index,
     togglePinNote,
     swapNotes,
     duplicateNote,
@@ -56,7 +55,7 @@ export default function NoteCard(props) {
   };
 
   return (
-    <DraggableCard {...p} index={index} onDrop={swapNotes} className="note-parent">
+    <DraggableCard {...p} item={note} onDrop={swapNotes} className="note-parent">
       <NoteInnerWrapper>
         {note.title ?
           <div aria-label="title">{note.title}</div>
@@ -86,7 +85,6 @@ export default function NoteCard(props) {
 
 NoteCard.propTypes = {
   note: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
   swapNotes: PropTypes.func.isRequired,
   deleteNote: PropTypes.func,
   togglePinNote: PropTypes.func,

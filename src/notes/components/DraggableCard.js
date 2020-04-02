@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import { useDragAndDrop } from '../helpers/useDragAndDrop';
 
 export default function DraggableCard(props) {
-  const { index, onDrop, children, ...p } = props;
+  const { item, onDrop, children, ...p } = props;
   const ref = useRef(null);
 
   const { isDragging } = useDragAndDrop(ref, {
-    index,
-    hover: createDragHoverCallback(ref, index, onDrop)
+    ...item,
+    hover: createDragHoverCallback(ref, item, onDrop)
   });
 
   const opacity = isDragging ? 0 : 1;
@@ -23,15 +23,15 @@ export default function DraggableCard(props) {
 };
 
 DraggableCard.propTypes = {
-  index: PropTypes.number.isRequired,
+  item: PropTypes.object.isRequired,
   onDrop: PropTypes.func.isRequired,
   children: PropTypes.node
 };
 
-const createDragHoverCallback = (ref, currentElementIndex, onDrop) => {
-  return (item, monitor) => {
-      const dragIndex = item.index;
-      const hoverIndex = currentElementIndex;
+const createDragHoverCallback = (ref, currentItem, onDrop) => {
+  return (otherItem, monitor) => {
+      const dragIndex = otherItem.sortOrder;
+      const hoverIndex = currentItem.sortOrder;
 
       if (dragIndex === hoverIndex) {
         return;
@@ -45,24 +45,24 @@ const createDragHoverCallback = (ref, currentElementIndex, onDrop) => {
       // When dragging downwards, only move when the cursor is below 50%
       // When dragging upwards, only move when the cursor is above 50%
       // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      if (dragIndex > hoverIndex && hoverClientY < hoverMiddleY) {
         return
       }
       // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      if (dragIndex < hoverIndex && hoverClientY > hoverMiddleY) {
         return
       }
 
       // TODO implement same check for left and right drag
 
       // Time to actually perform the action
-      onDrop(dragIndex, hoverIndex)
+      onDrop(otherItem.id, currentItem.id);
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
-      item.index = hoverIndex
+      otherItem.sortOrder = currentItem.sortOrder;
     }
 }
 

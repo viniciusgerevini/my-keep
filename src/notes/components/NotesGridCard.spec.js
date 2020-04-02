@@ -33,16 +33,15 @@ describe('NotesGridCard component', () => {
   });
 
   it('calls swapNotes when drag happens', () => {
-    const note = { id: '123', title: 'hello', content: 'bla'};
-    const firstNoteIndex = 1;
-    const secondNoteIndex = 2;
+    const note = { id: '123', title: 'hello', content: 'bla', sortOrder: 2 };
+    const note2 = { id: 'abc', title: 'hello2', content: 'bla2', sortOrder: 3 };
     const fakeMonitor = { getClientOffset: () => ({}) };
-    render(<NotesGridCard index={firstNoteIndex} note={note} swapNotes={fakeSwapNotes}/>);
+    render(<NotesGridCard note={note} swapNotes={fakeSwapNotes}/>);
 
     const { hover } = dnd.useDragAndDrop.mock.calls[0][1];
-    hover({ index: secondNoteIndex }, fakeMonitor);
+    hover(note2, fakeMonitor);
 
-    expect(fakeSwapNotes).toHaveBeenCalledWith(secondNoteIndex, firstNoteIndex);
+    expect(fakeSwapNotes).toHaveBeenCalledWith(note2.id, note.id);
   })
 
   it('shows menu when menu icon is pressed', () => {

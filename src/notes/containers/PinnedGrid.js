@@ -9,7 +9,8 @@ import {
 } from '../redux';
 
 const mapStateToProps = (state, props) => ({
-  notes: state.notes.filter(n => !!n.isPinned),
+  notes: state.notes.filter(n => !!n.isPinned)
+                    .sort((a, b) =>  b.sortOrder - a.sortOrder),
   ...props
 });
 

@@ -33,21 +33,24 @@ describe('Note reducers', () => {
 
       const action = createNote({ title: note.title, content: note.content });
 
-      expect(reducers(state, action)).toEqual([note]);
+      expect(reducers(state, action)).toEqual([{ ...note, sortOrder: expect.any(Number) }]);
     });
 
-    it('inserts new note as first item', () => {
+    it('inserts new item with default sort order', () => {
       const state = createTestState([{
         id: 'old note',
         title: 'some note',
-        content: 'bla bla bla'
+        content: 'bla bla bla',
+        sortOrder: 20
       }]);
 
       uuid.v4.mockReturnValue('new note');
 
       const action = createNote({ title: 'some new note' });
 
-      expect(reducers(state, action)[0].id).toEqual("new note");
+      const [note1, note2] = reducers(state, action);
+
+      expect(note1.sortOrder < note2.sortOrder).toBe(true);
     });
   });
 
@@ -107,23 +110,30 @@ describe('Note reducers', () => {
       const note1 = {
         id: 'note1',
         title: 'some note',
-        content: 'bla bla bla'
+        content: 'bla bla bla',
+        sortOrder: 1000,
       };
       const note2 = {
         id: 'note2',
         title: 'some note2',
-        content: 'bla bla bla2'
+        content: 'bla bla bla2',
+        sortOrder: 1001,
       };
       const note3 = {
         id: 'note3',
         title: 'some note3',
-        content: 'bla bla bla3'
+        content: 'bla bla bla3',
+        sortOrder: 1002,
       };
       const state = createTestState([ note1, note2, note3 ]);
 
-      const action = swapNotes({ src: 0, dest: 2 });
+      const action = swapNotes({ src: note1.id, dest: note2.id });
 
-      expect(reducers(state, action)).toEqual(createTestState([ note3, note2, note1 ]));
+      expect(reducers(state, action)).toEqual(createTestState([
+        { ...note1, sortOrder: note2.sortOrder  },
+        { ...note2, sortOrder: note1.sortOrder  },
+        note3,
+      ]));
     });
 
   });

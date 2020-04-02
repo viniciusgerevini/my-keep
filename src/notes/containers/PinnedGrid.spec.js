@@ -44,6 +44,17 @@ describe('PinnedGrid container', () => {
     expect(getByText(note3.title)).toBeInTheDocument();
   });
 
+  it('renders notes from state sorted by reversed sortOrder', () => {
+    const note1 = { id: 'note1', title: 'some note', isPinned: true, sortOrder: 1 };
+    const note2 = { id: 'note2', title: 'some other note', isPinned:true, sortOrder: 2 };
+    const store = createMockStore([ note1, note2 ]);
+    render(<Provider store={store}><PinnedGrid /></Provider>);
+
+    expect(DraggableCard.mock.calls[0][0].item).toEqual(note2);
+    expect(DraggableCard.mock.calls[1][0].item).toEqual(note1);
+  });
+
+
   it('trigger swap notes', () => {
     const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const store = createMockStore([ note1 ]);

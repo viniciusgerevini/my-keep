@@ -42,6 +42,16 @@ describe('HomeGrid container', () => {
     expect(getByText(note2.title)).toBeInTheDocument();
   });
 
+  it('renders notes from state sorted by reversed sortOrder', () => {
+    const note1 = { id: 'note1', title: 'some note', sortOrder: 1 };
+    const note2 = { id: 'note2', title: 'some other note', sortOrder: 2 };
+    const store = createMockStore([ note1, note2 ]);
+    render(<Provider store={store}><HomeGrid /></Provider>);
+
+    expect(DraggableCard.mock.calls[0][0].item).toEqual(note2);
+    expect(DraggableCard.mock.calls[1][0].item).toEqual(note1);
+  });
+
   it('does not render pinned notes', () => {
     const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const note2 = { id: 'note2', title: 'some other note' };

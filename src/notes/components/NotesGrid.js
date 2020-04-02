@@ -43,10 +43,9 @@ export default function NotesGrid(props) {
   return (
     <DndProvider backend={Backend}>
       <GridWrapper ref={gridRef}>
-        {notes.map((note, index) =>
+        {notes.map((note) =>
           <NoteCard
             key={note.id}
-            index={index}
             swapNotes={swapNotes}
             deleteNote={deleteNote}
             duplicateNote={duplicateNote}

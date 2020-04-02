@@ -15,10 +15,11 @@ export function createEmptyState() {
 const createNoteReducer = (state, action) => {
   const note = {
     id: uuid(),
-    ...action.payload
+    ...action.payload,
+    sortOrder: Date.now()
   };
 
-  return [note].concat(state);
+  return state.concat(note);
 };
 
 const updateNoteReducer = (state, action) => {
@@ -34,7 +35,13 @@ const deleteNoteReducer = (state, action) => {
 };
 
 const swapNotesReducer = (state, action) => {
-  [state[action.payload.src], state[action.payload.dest]] = [state[action.payload.dest], state[action.payload.src]];
+  const note1 = state.find(n => n.id === action.payload.src);
+  const note2 = state.find(n => n.id === action.payload.dest);
+
+  const firstOrder = note1.sortOrder;
+  note1.sortOrder = note2.sortOrder;
+  note2.sortOrder = firstOrder;
+
   return state;
 };
 
