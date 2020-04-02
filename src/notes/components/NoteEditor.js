@@ -4,6 +4,7 @@ import React, {
   useState,
   useImperativeHandle,
   forwardRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Editor, EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
@@ -144,4 +145,13 @@ function NoteEditor(props, ref) {
 }
 
 export default forwardRef(NoteEditor);
+
+NoteEditor.propTypes = {
+  hideTitle: PropTypes.bool,
+  hideEditor: PropTypes.bool,
+  hideFooter: PropTypes.bool,
+  closeAction: PropTypes.func,
+  onClick: PropTypes.func,
+  note: PropTypes.object.isRequired,
+};
 
