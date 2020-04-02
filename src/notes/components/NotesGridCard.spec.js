@@ -83,4 +83,21 @@ describe('NotesGridCard component', () => {
 
     expect(deleteNoteStub).toHaveBeenCalledWith(note.id);
   });
+
+  it('triggers duplicate when menu "Duplicate note" is clicked', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const duplicateNoteStub = jest.fn();
+    const { getByTitle, getByText } = render(
+      <NotesGridCard
+        note={note}
+        index={0}
+        duplicateNote={duplicateNoteStub}
+        swapNotes={fakeSwapNotes}/>
+    );
+
+    fireEvent.click(getByTitle('More'));
+    fireEvent.click(getByText("Duplicate note"));
+
+    expect(duplicateNoteStub).toHaveBeenCalledWith(note);
+  });
 });

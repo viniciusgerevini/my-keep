@@ -14,6 +14,7 @@ const MenuWrapper = styled.ul `
 `;
 
 const MenuItem = styled.li `
+  cursor: pointer;
   padding: 5px 10px;
   background-color: ${props => props.theme.background};
 
@@ -25,6 +26,11 @@ const MenuItem = styled.li `
 function HoverMenu(props, ref) {
   const { items } = props;
 
+  const executeAction = (e, action) => {
+    e.stopPropagation();
+    action();
+  };
+
   useEffect(() => {
     const horizontalOffset = ref.current.getBoundingClientRect() * 0.7;
     ref.current.style.right = `-${horizontalOffset}px`;
@@ -32,7 +38,7 @@ function HoverMenu(props, ref) {
   });
 
   return (<MenuWrapper ref={ref}>
-    { items.map((item) => <MenuItem key={item.text} onClick={item.action}>{item.text}</MenuItem>)}
+    { items.map((item) => <MenuItem key={item.text} onClick={e => executeAction(e, item.action)}>{item.text}</MenuItem>)}
   </MenuWrapper>)
 }
 

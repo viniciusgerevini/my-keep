@@ -25,5 +25,22 @@ describe('HoverMenu content', () => {
 
     expect(items[0].action).toHaveBeenCalled();
   });
+
+
+  it('does not bubble action click', () => {
+    const items = [
+      { text: 'Delete', action: jest.fn() },
+      { text: 'SomeOption' }
+    ];
+
+    const parentOnClick = jest.fn();
+
+    const { getByText } = render(<div onClick={parentOnClick}><HoverMenu ref={React.createRef()} items={items} /></div>);
+
+    fireEvent.click(getByText(items[0].text));
+
+    expect(items[0].action).toHaveBeenCalled();
+    expect(parentOnClick).not.toHaveBeenCalled();
+  });
 });
 

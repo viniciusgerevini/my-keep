@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { render, act, fireEvent } from '@testing-library/react';
-import { updateNote, deleteNote, swapNotes } from '../redux';
+import { createNote, updateNote, deleteNote, swapNotes } from '../redux';
 import HomeGrid from './HomeGrid';
 import DraggableCard from '../components/DraggableCard';
 
@@ -82,6 +82,23 @@ describe('HomeGrid container', () => {
 
     expect(action.type).toEqual(updateNote.toString());
     expect(action.payload).toEqual(note1);
+  });
+
+  it('triggers create note with note info', () => {
+    const note1 = { id: 'note1', title: 'some note', content: 'some content' };
+    const store = mockStore({
+      notes: [ note1 ]
+    });
+
+    const { getByLabelText, getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+
+    fireEvent.click(getByLabelText(/More actions/i));
+    fireEvent.click(getByText(/Duplicate note/i));
+
+    const action = store.getActions()[0];
+
+    expect(action.type).toEqual(createNote.toString());
+    expect(action.payload).toEqual({ title: note1.title, content: note1.content });
   });
 });
 
