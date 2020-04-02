@@ -5,7 +5,8 @@ import reducers, {
   swapNotes,
   deleteNote,
   updateNote,
-  createEmptyState
+  createEmptyState,
+  pinNote
 } from './index';
 
 
@@ -144,6 +145,27 @@ describe('Note reducers', () => {
       const action = deleteNote(note2.id);
 
       expect(reducers(state, action)).toEqual(createTestState([ note1 ]));
+    });
+  });
+
+  describe('#pinNote', () => {
+    it('marks note as pinned', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla'
+      };
+      const note2 = {
+        id: 'note2',
+        title: 'some note2',
+        content: 'bla bla bla2'
+      };
+
+      const state = createTestState([ note1, note2 ]);
+
+      const action = pinNote(note2.id);
+
+      expect(reducers(state, action)).toEqual(createTestState([ note1, { ...note2, isPinned: true } ]));
     });
   });
 

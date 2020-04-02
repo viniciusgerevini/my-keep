@@ -1,9 +1,15 @@
 import { connect } from 'react-redux';
 import NotesGrid from '../components/NotesGrid';
-import { createNote, updateNote, deleteNote, swapNotes } from '../redux';
+import {
+  createNote,
+  updateNote,
+  deleteNote,
+  swapNotes,
+  pinNote
+} from '../redux';
 
 const mapStateToProps = (state, props) => ({
-  notes: state.notes,
+  notes: state.notes.filter(n => !n.isPinned),
   ...props
 });
 
@@ -24,6 +30,10 @@ const mapDispatchToProps = dispatch => ({
   },
   swapNotes: (src, dest) => {
       dispatch(swapNotes({src, dest}));
+  },
+
+  pinNoteAction: (id) => {
+    dispatch(pinNote(id));
   }
 });
 

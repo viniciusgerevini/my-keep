@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { MdUndo, MdRedo } from 'react-icons/md';
 import { FaEllipsisV } from 'react-icons/fa';
-
+import { AiFillPushpin, AiOutlinePushpin } from 'react-icons/ai';
 
 export const IconWrapper = styled.div `
   display: inline-flex;
@@ -11,7 +11,7 @@ export const IconWrapper = styled.div `
   border-radius: 50%;
   cursor: pointer;
   opacity: .54;
-  
+
   margin: 0px 5px;
 
   &:hover {
@@ -23,6 +23,8 @@ export const IconWrapper = styled.div `
 export const UndoIcon = (props) => <IconWrapper {...props}><MdUndo/></IconWrapper>;
 export const RedoIcon = (props) => <IconWrapper {...props}><MdRedo/></IconWrapper>;
 export const MenuBallsIcon = (props) => <IconWrapper {...props}><FaEllipsisV/></IconWrapper>;
+export const PinIcon = (props) => <IconWrapper {...props}><AiOutlinePushpin/></IconWrapper>;
+export const UnpinIcon = (props) => <IconWrapper {...props}><AiFillPushpin/></IconWrapper>;
 
 export const ActionButton = styled.button `
   color: ${props=> props.theme.textColor};
