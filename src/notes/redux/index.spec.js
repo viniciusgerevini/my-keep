@@ -6,7 +6,8 @@ import reducers, {
   deleteNote,
   updateNote,
   createEmptyState,
-  pinNote
+  pinNote,
+  unpinNote
 } from './index';
 
 
@@ -128,7 +129,7 @@ describe('Note reducers', () => {
   });
 
   describe('#deleteNote', () => {
-    it('swaps notes positions', () => {
+    it('deletes notes', () => {
       const note1 = {
         id: 'note1',
         title: 'some note',
@@ -169,6 +170,27 @@ describe('Note reducers', () => {
     });
   });
 
+  describe('#unpinNote', () => {
+    it('marks note as pinned', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla',
+      };
+      const note2 = {
+        id: 'note2',
+        title: 'some note2',
+        content: 'bla bla bla2',
+        isPinned: true
+      };
+
+      const state = createTestState([ note1, note2 ]);
+
+      const action = unpinNote(note2.id);
+
+      expect(reducers(state, action)).toEqual(createTestState([ note1, { ...note2, isPinned: false } ]));
+    });
+  });
   it('ignores unknown action', () => {
     const state = createTestState();
     const action = { type: 'some-unknown-action' };

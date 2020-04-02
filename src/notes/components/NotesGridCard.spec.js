@@ -131,13 +131,12 @@ describe('NotesGridCard component', () => {
   });
 
   it('shows unpin not when note is pinned', () => {
-    const note = { id: '123', title: 'hello', content: 'bla'};
+    const note = { id: '123', title: 'hello', content: 'bla', isPinned: true };
     const pinNoteStub = jest.fn();
     const { getByLabelText } = render(
       <NotesGridCard
         note={note}
         index={0}
-        isPinned={true}
         togglePinNote={pinNoteStub}
         swapNotes={fakeSwapNotes}/>
     );

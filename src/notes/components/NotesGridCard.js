@@ -15,7 +15,6 @@ export default function NoteCard(props) {
   const {
     note,
     index,
-    isPinned,
     togglePinNote,
     swapNotes,
     duplicateNote,
@@ -58,14 +57,6 @@ export default function NoteCard(props) {
 
   return (
     <DraggableCard {...p} index={index} onDrop={swapNotes} className="note-parent">
-      { togglePinNote ?
-          <Pin role="button" onClick={togglePin}>
-            { isPinned ?
-                <UnpinIcon aria-label="Unpin note" title="Unpin note"/>
-              : <PinIcon aria-label="Pin note" title="Pin note"/>
-            }
-          </Pin>
-        : undefined }
       <NoteInnerWrapper>
         {note.title ?
           <div aria-label="title">{note.title}</div>
@@ -81,6 +72,14 @@ export default function NoteCard(props) {
         />
       </NoteActions>
       { isMenuVisible ? <HoverMenu ref={hoverMenuRef} items={menuActions}/> : undefined }
+      { togglePinNote ?
+          <Pin role="button" onClick={togglePin}>
+            { note.isPinned ?
+                <UnpinIcon aria-label="Unpin note" title="Unpin note"/>
+              : <PinIcon aria-label="Pin note" title="Pin note"/>
+            }
+          </Pin>
+        : undefined }
     </DraggableCard>
   );
 };
@@ -91,7 +90,6 @@ NoteCard.propTypes = {
   swapNotes: PropTypes.func.isRequired,
   deleteNote: PropTypes.func,
   togglePinNote: PropTypes.func,
-  isPinned: PropTypes.bool
 };
 
 

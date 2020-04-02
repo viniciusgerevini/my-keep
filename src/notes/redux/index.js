@@ -6,6 +6,7 @@ export const updateNote = createAction('my-keep/notes/UPDATE');
 export const deleteNote = createAction('my-keep/notes/DELETE');
 export const swapNotes = createAction('my-keep/notes/SWAP_NOTES_POSITION');
 export const pinNote = createAction('my-keep/notes/PIN_NOTE');
+export const unpinNote = createAction('my-keep/notes/UNPIN_NOTE');
 
 export function createEmptyState() {
   return [];
@@ -43,6 +44,11 @@ const pinNoteReducer = (state, action) => {
   return state;
 };
 
+const unpinNoteReducer = (state, action) => {
+  const note = state.find(n => n.id === action.payload);
+  note.isPinned = false;
+  return state;
+};
 
 const noteReducers = createReducer(createEmptyState(), {
   [createNote]: createNoteReducer,
@@ -50,6 +56,7 @@ const noteReducers = createReducer(createEmptyState(), {
   [deleteNote]: deleteNoteReducer,
   [swapNotes]: swapNotesReducer,
   [pinNote]: pinNoteReducer,
+  [unpinNote]: unpinNoteReducer,
 });
 
 export default noteReducers;
