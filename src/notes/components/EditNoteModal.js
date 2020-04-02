@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import NoteEditor from './NoteEditor';
 
@@ -21,6 +22,12 @@ export default function EditNoteModal(props) {
     </ModalWrapper>
   );
 };
+
+EditNoteModal.propTypes = {
+  note: PropTypes.object,
+  onModalClose: PropTypes.func.isRequired,
+  updateNote: PropTypes.func
+}
 
 const ModalBackground = styled.div `
   position: fixed;

@@ -6,7 +6,7 @@ describe('EditNoteModal component', () => {
   const note = { id: '123', title: 'hello', content: '<p>bla</p>'};
 
   it('renders fields', () => {
-    const { getByLabelText } = render(<EditNoteModal note={note} />);
+    const { getByLabelText } = render(<EditNoteModal note={note}  onModalClose={() => {}}/>);
 
     expect(getByLabelText(/title/i)).toBeInTheDocument();
     expect(getByLabelText(/content/i)).toBeInTheDocument();
