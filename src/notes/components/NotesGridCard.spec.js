@@ -16,7 +16,7 @@ describe('NotesGridCard component', () => {
 
   it('renders component', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByText } = render(<NotesGridCard note={note} />);
+    const { getByText } = render(<NotesGridCard note={note} index={0} />);
 
     expect(getByText(note.title)).toBeInTheDocument();
     expect(getByText(note.content)).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe('NotesGridCard component', () => {
 
   it('renders without title', () => {
     const note = { id: '123', content: 'bla'};
-    const { getByText } = render(<NotesGridCard note={note} />);
+    const { getByText } = render(<NotesGridCard note={note} index={0} />);
 
     expect(getByText(note.content)).toBeInTheDocument();
   });
@@ -45,7 +45,7 @@ describe('NotesGridCard component', () => {
 
   it('shows menu when menu icon is pressed', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByTitle, getByText } = render(<NotesGridCard note={note} />);
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} index={0}/>);
 
     fireEvent.click(getByTitle('More'));
 
@@ -54,7 +54,7 @@ describe('NotesGridCard component', () => {
 
   it('toggles menu when clicked menu icon', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByTitle, queryByText } = render(<NotesGridCard note={note} />);
+    const { getByTitle, queryByText } = render(<NotesGridCard note={note} index={0} />);
 
     fireEvent.click(getByTitle('More'));
     fireEvent.click(getByTitle('More'));
@@ -64,7 +64,7 @@ describe('NotesGridCard component', () => {
 
   it('hides menu when clicked outside element', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
-    const { getByTitle, queryByText, container } = render(<NotesGridCard note={note} />);
+    const { getByTitle, queryByText, container } = render(<NotesGridCard note={note} index={0} />);
 
     fireEvent.click(getByTitle('More'));
     fireEvent.mouseDown(container);
@@ -75,7 +75,7 @@ describe('NotesGridCard component', () => {
   it('triggers delete when menu delete is clicked', () => {
     const note = { id: '123', title: 'hello', content: 'bla'};
     const deleteNoteStub = jest.fn();
-    const { getByTitle, getByText } = render(<NotesGridCard note={note} deleteNote={deleteNoteStub}/>);
+    const { getByTitle, getByText } = render(<NotesGridCard note={note} index={0} deleteNote={deleteNoteStub}/>);
 
     fireEvent.click(getByTitle('More'));
     fireEvent.click(getByText("Delete note"));
