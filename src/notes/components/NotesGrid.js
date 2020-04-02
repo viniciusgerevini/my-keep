@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Backend from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
@@ -56,6 +57,13 @@ export default function NotesGrid(props) {
     </DndProvider>
   );
 }
+
+NotesGrid.propTypes = {
+  notes: PropTypes.array.isRequired,
+  deleteNote: PropTypes.func.isRequired,
+  swapNotes: PropTypes.func.isRequired,
+  updateNote: PropTypes.func.isRequired
+};
 
 const adjustGridItemsHeight = (items) => {
   for (let i = 0; i < items.length; i++) {
