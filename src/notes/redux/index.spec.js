@@ -36,6 +36,21 @@ describe('Note reducers', () => {
       expect(reducers(state, action)).toEqual([{ ...note, sortOrder: expect.any(Number) }]);
     });
 
+    it('always uses generated id', () => {
+      const state = createTestState();
+      const note = {
+        id: 'given id',
+        title: 'some note',
+        content: 'bla bla bla'
+      };
+
+      uuid.v4.mockReturnValue('generated id');
+
+      const action = createNote(note);
+
+      expect(reducers(state, action)[0].id).toEqual('generated id');
+    });
+
     it('inserts new item with default sort order', () => {
       const state = createTestState([{
         id: 'old note',

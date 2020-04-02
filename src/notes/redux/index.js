@@ -14,8 +14,8 @@ export function createEmptyState() {
 
 const createNoteReducer = (state, action) => {
   const note = {
-    id: uuid(),
     ...action.payload,
+    id: uuid(),
     sortOrder: Date.now()
   };
 
