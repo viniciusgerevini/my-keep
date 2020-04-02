@@ -22,7 +22,8 @@ export default function NotesGrid(props) {
     notes,
     deleteNote,
     swapNotes,
-    updateNote
+    updateNote,
+    duplicateNote,
   } = props;
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function NotesGrid(props) {
             index={index}
             swapNotes={swapNotes}
             deleteNote={deleteNote}
+            duplicateNote={duplicateNote}
             className="grid-item"
             note={note}
             onClick={() => openNote(note)}
@@ -61,6 +63,7 @@ export default function NotesGrid(props) {
 NotesGrid.propTypes = {
   notes: PropTypes.array.isRequired,
   deleteNote: PropTypes.func.isRequired,
+  duplicateNote: PropTypes.func.isRequired,
   swapNotes: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired
 };

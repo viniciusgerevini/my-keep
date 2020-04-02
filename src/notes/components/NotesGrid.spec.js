@@ -11,7 +11,9 @@ describe('NotesGrid component', () => {
       { id: 'abc', title: 'hello', content: 'something' }
     ];
 
-    const { getByLabelText } = render(<NotesGrid notes={notes} deleteNote={noop} swapNotes={noop} updateNote={noop}/>);
+    const { getByLabelText } = render(
+      <NotesGrid notes={notes} deleteNote={noop} swapNotes={noop} updateNote={noop} duplicateNote={noop}/>
+    );
 
     expect(getByLabelText(/title/i).textContent).toEqual(notes[0].title);
     expect(getByLabelText(/content/i).textContent).toEqual(notes[0].content);
@@ -21,7 +23,9 @@ describe('NotesGrid component', () => {
     const notes = [
       { id: 'abc', title: 'hello', content: 'something' }
     ];
-    const { container } = render(<NotesGrid notes={notes} deleteNote={noop} swapNotes={noop} updateNote={noop}/>);
+    const { container } = render(
+      <NotesGrid notes={notes} deleteNote={noop} swapNotes={noop} updateNote={noop} duplicateNote={noop}/>
+    );
     const note = container.firstChild.firstChild
 
     expect(note.style.gridRowEnd).toEqual("span 1");

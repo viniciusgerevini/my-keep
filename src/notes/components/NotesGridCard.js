@@ -8,7 +8,12 @@ import { useClickOutside } from '../../layout/helpers/useClickOutside';
 import DraggableCard from './DraggableCard';
 
 export default function NoteCard(props) {
-  const { note, index, swapNotes, deleteNote, ...p } = props;
+  const {
+    note,
+    index,
+    swapNotes,
+    duplicateNote,
+    deleteNote, ...p } = props;
   const [isMenuVisible, setMenuVisible] = useState(false);
   const hoverMenuRef = useRef(null);
 
@@ -18,6 +23,13 @@ export default function NoteCard(props) {
       action() {
         setMenuVisible(false);
         deleteNote(note.id);
+      }
+    },
+    {
+      text: 'Duplicate note',
+      action() {
+        setMenuVisible(false);
+        duplicateNote(note);
       }
     }
   ];
