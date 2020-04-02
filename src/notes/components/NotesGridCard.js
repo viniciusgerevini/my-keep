@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { MenuBallsIcon } from '../../styled';
@@ -50,6 +51,14 @@ export default function NoteCard(props) {
     </DraggableCard>
   );
 };
+
+NoteCard.propTypes = {
+  note: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  swapNotes: PropTypes.func.isRequired,
+  deleteNote: PropTypes.func,
+};
+
 
 const NoteInnerWrapper = styled.div `
   min-height: 160px;

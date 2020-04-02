@@ -10,19 +10,20 @@ jest.mock('../helpers/useDragAndDrop', () => {
 });
 
 describe('DraggableCard component', () => {
+  const fakeDropAction = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('renders children', () => {
     const firstCardIndex = 1;
-    const { getByText } = render(<DraggableCard index={firstCardIndex}><div>someChildren</div></DraggableCard>);
+    const { getByText } = render(<DraggableCard index={firstCardIndex} onDrop={fakeDropAction}><div>someChildren</div></DraggableCard>);
 
     expect(getByText('someChildren')).toBeInTheDocument();
   });
 
   it('calls drop action when drag happens', () => {
-    const fakeDropAction = jest.fn();
     const firstCardIndex = 1;
     const secondCardIndex = 2;
     const fakeMonitor = { getClientOffset: () => ({}) };
@@ -35,7 +36,6 @@ describe('DraggableCard component', () => {
   })
 
   it('changes item index when drag happens', () => {
-    const fakeDropAction = jest.fn();
     const firstCardIndex = 1;
     const secondCardIndex = 2;
     const fakeMonitor = { getClientOffset: () => ({}) };
@@ -49,7 +49,6 @@ describe('DraggableCard component', () => {
   });
 
   it('does not trigger drop action if target and source index are the same', () => {
-    const fakeDropAction = jest.fn();
     const firstCardIndex = 1;
     const secondCardIndex = 1;
     const fakeMonitor = { getClientOffset: () => ({}) };
@@ -63,7 +62,6 @@ describe('DraggableCard component', () => {
   });
 
   it('does not trigger drop action if drag not activated downwards', () => {
-    const fakeDropAction = jest.fn();
     const firstCardIndex = 1;
     const secondCardIndex = 2;
     const fakeMonitor = { getClientOffset: () => ({ y: 1000 }) };
@@ -77,7 +75,6 @@ describe('DraggableCard component', () => {
   });
 
   it('does not trigger drop action if drag not activated upwards', () => {
-    const fakeDropAction = jest.fn();
     const firstCardIndex = 2;
     const secondCardIndex = 1;
     const fakeMonitor = { getClientOffset: () => ({ y: -1000 }) };
@@ -93,7 +90,7 @@ describe('DraggableCard component', () => {
   it('changes oppacity when item is being dragged', () => {
     dnd.useDragAndDrop.mockReturnValue({ isDragging: true });
 
-    const { container } = render(<DraggableCard index={1} />);
+    const { container } = render(<DraggableCard index={1} onDrop={fakeDropAction} />);
     const noteCard = container.firstChild;
 
     expect(noteCard.style.opacity).toEqual("0");

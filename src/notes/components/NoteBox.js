@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import NoteEditor from './NoteEditor';
 
-export default function AddNoteBox(props) {
+
+export default function NoteBox(props) {
   const {updateNote} = props;
   const [isFocused, setFocused] = useState(false);
 
@@ -42,4 +45,8 @@ export default function AddNoteBox(props) {
     />
   );
 }
+
+NoteBox.propTypes = {
+  updateNote: PropTypes.func.isRequired
+};
 

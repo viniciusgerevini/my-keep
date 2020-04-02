@@ -3,19 +3,25 @@ import { render, fireEvent } from '@testing-library/react';
 import NoteBox from './NoteBox';
 
 describe('NoteBox component', () => {
+  const stubUpdateNote = jest.fn();
+
+  beforeEach(function() {
+    jest.clearAllMocks();
+  });
+
   it('renders placeholder by default', () => {
-    const { getByText } = render(<NoteBox />);
+    const { getByText } = render(<NoteBox updateNote={stubUpdateNote}/>);
     expect(getByText(/Take a note/i)).toBeInTheDocument();
   });
 
   it('does not render title and actions by default', () => {
-    const { queryByLabelText } = render(<NoteBox />);
+    const { queryByLabelText } = render(<NoteBox updateNote={stubUpdateNote}/>);
     expect(queryByLabelText(/title/i)).toBeNull();
     expect(queryByLabelText(/actions/i)).toBeNull();
   });
 
   it('shows title and actions on click', () => {
-    const { container, getByLabelText } = render(<NoteBox />);
+    const { container, getByLabelText } = render(<NoteBox updateNote={stubUpdateNote}/>);
     const box = container.firstChild;
 
     fireEvent.click(box);
@@ -25,7 +31,7 @@ describe('NoteBox component', () => {
   });
 
   it('hides title and actions when clicked outside box', () => {
-    const { container, queryByLabelText, getByLabelText } = render(<NoteBox updateNote={()=>{}}/>);
+    const { container, queryByLabelText, getByLabelText } = render(<NoteBox updateNote={stubUpdateNote}/>);
     const box = container.firstChild;
 
     fireEvent.click(box);
@@ -40,33 +46,30 @@ describe('NoteBox component', () => {
   });
 
   it('calls update note callback when clicked outside box', () => {
-    const updateCallbackStub = jest.fn();
-    const { container } = render(<NoteBox updateNote={updateCallbackStub}/>);
+    const { container } = render(<NoteBox updateNote={stubUpdateNote}/>);
     const box = container.firstChild;
 
     fireEvent.click(box);
     fireEvent.mouseDown(container);
 
-    expect(updateCallbackStub).toHaveBeenCalled();
+    expect(stubUpdateNote).toHaveBeenCalled();
   });
 
   it('does not call update note callback when clicked outside but box was never clicked before', () => {
-    const updateCallbackStub = jest.fn();
-    const { container } = render(<NoteBox updateNote={updateCallbackStub}/>);
+    const { container } = render(<NoteBox updateNote={stubUpdateNote}/>);
 
     fireEvent.mouseDown(container);
 
-    expect(updateCallbackStub).not.toHaveBeenCalled();
+    expect(stubUpdateNote).not.toHaveBeenCalled();
   });
 
   it('calls update note callback when close button is clicked', () => {
-    const updateCallbackStub = jest.fn();
-    const { container, getByLabelText } = render(<NoteBox updateNote={updateCallbackStub}/>);
+    const { container, getByLabelText } = render(<NoteBox updateNote={stubUpdateNote}/>);
     const box = container.firstChild;
 
     fireEvent.click(box);
     fireEvent.click(getByLabelText(/close/i));
 
-    expect(updateCallbackStub).toHaveBeenCalled();
+    expect(stubUpdateNote).toHaveBeenCalled();
   });
 });
