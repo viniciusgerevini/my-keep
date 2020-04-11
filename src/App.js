@@ -3,17 +3,27 @@ import { configureStore } from '@reduxjs/toolkit'
 import styled from 'styled-components';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+import throttle from 'lodash/throttle';
 
 import TopBar from './layout/components/TopBar';
 import SideBar from './layout/components/SideBar';
 import MainPane from './layout/components/MainPane';
 import theme from './layout/theme';
 import reducer from './reducers';
+import { loadState, saveState } from './storage/local-storage';
 
 const store = configureStore({
   reducer,
   devTools: process.env.NODE_ENV !== 'production',
+  preloadedState: loadState(),
 })
+
+store.subscribe(throttle(() => {
+  const state = store.getState();
+  saveState({
+    notes: state.notes
+  });
+}, 1000));
 
 const AppWrapper = styled.div `
   height: 100%;
