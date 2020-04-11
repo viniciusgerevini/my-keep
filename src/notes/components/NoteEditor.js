@@ -117,7 +117,7 @@ function NoteEditor(props, ref) {
   };
 
   return (
-    <AddNoteWrapper ref={wrapper} onClick={onClick} {...extraProps}>
+    <AddNoteWrapper ref={wrapper} aria-label="Note editor" onClick={onClick} {...extraProps}>
       {hideTitle ? '' : <TitleInput placeholder="Title" ref={title} defaultValue={note ? note.title : undefined} aria-label="title"/>}
 
       { hideEditor ? <EditorPlaceholder>{'Take a note...'}</EditorPlaceholder>:
