@@ -1,6 +1,6 @@
 import React, {
   useRef,
-  // useEffect,
+  useEffect,
   useState,
   useImperativeHandle,
   forwardRef } from 'react';
@@ -79,14 +79,11 @@ function NoteEditor(props, ref) {
     note && note.content ? EditorState.createWithContent(stateFromHTML(note.content)) : EditorState.createEmpty(),
   );
 
-  // useEffect(() => {
-  //   window.requestAnimationFrame(() => {
-  //     if (editor.current && !hideEditor) {
-  //       editor.current.focus();
-  //     }
-  //   });
-  //
-  // }, [hideEditor]);
+  useEffect(() => {
+    if (editor.current && !hideEditor) {
+      editor.current.focus();
+    }
+  }, [hideEditor]);
 
   useImperativeHandle(ref, () => ({
     getNoteContent() {

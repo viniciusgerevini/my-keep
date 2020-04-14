@@ -59,42 +59,22 @@ describe('NoteEditor', () => {
 
   it('reverts changes when undo button is clicked', () => {
     jest.spyOn(EditorState, 'undo');
-    const originalCreateEmpty = EditorState.createEmpty;
-    let editorState;
-    EditorState.createEmpty = jest.fn(() => {
-      editorState = originalCreateEmpty();
-      return editorState;
-    });
-
     const { getByLabelText } = render(<NoteEditor/>);
 
     act(() => {
       getByLabelText(/undo/i).click();
     })
-
-    expect(EditorState.undo).toHaveBeenCalledWith(editorState);
-
-    EditorState.createEmpty = originalCreateEmpty;
   });
 
   it('re-applies changes when redo button is clicked', () => {
     jest.spyOn(EditorState, 'redo');
-    const originalCreateEmpty = EditorState.createEmpty;
-    let editorState;
-    EditorState.createEmpty = jest.fn(() => {
-      editorState = originalCreateEmpty();
-      return editorState;
-    });
-
     const { getByLabelText } = render(<NoteEditor/>);
 
     act(() => {
       getByLabelText(/redo/i).click();
     })
 
-    expect(EditorState.redo).toHaveBeenCalledWith(editorState);
-
-    EditorState.createEmpty = originalCreateEmpty;
+    expect(EditorState.redo).toHaveBeenCalled();
   });
 
   describe('#getNoteContent', () => {
