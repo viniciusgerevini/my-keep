@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import NotesGrid from '../components/NotesGrid';
+import MainNotesGrid from '../components/MainNotesGrid';
 import {
   createNote,
   updateNote,
@@ -41,4 +41,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NotesGrid);
+)(MainNotesGrid);
