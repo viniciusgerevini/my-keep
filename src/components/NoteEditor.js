@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { Editor, EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import { stateFromHTML } from 'draft-js-import-html';
-import { UndoIcon, RedoIcon, ActionButton } from '../../styled';
+import { UndoIcon, RedoIcon, ActionButton } from '../styled';
 
 import 'draft-js/dist/Draft.css';
 

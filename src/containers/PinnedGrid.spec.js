@@ -9,7 +9,7 @@ import {
   swapNotes,
   unpinNote,
   createEmptyState,
-} from '../redux';
+} from '../redux/notes';
 import PinnedGrid from './PinnedGrid';
 import DraggableCard from '../components/DraggableCard';
 

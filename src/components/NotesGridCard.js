@@ -6,9 +6,9 @@ import {
   MenuBallsIcon,
   PinIcon,
   UnpinIcon
-} from '../../styled';
-import HoverMenu from '../../layout/components/HoverMenu';
-import { useClickOutside } from '../../layout/helpers/useClickOutside';
+} from '../styled';
+import HoverMenu from '../components/HoverMenu';
+import { useClickOutside } from '../helpers/useClickOutside';
 import DraggableCard from './DraggableCard';
 
 export default function NoteCard(props) {

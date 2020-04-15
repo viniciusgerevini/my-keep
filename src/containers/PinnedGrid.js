@@ -6,7 +6,7 @@ import {
   deleteNote,
   swapNotes,
   unpinNote
-} from '../redux';
+} from '../redux/notes';
 
 const mapStateToProps = (state, props) => ({
   notes: state.notes.filter(n => !!n.isPinned)
