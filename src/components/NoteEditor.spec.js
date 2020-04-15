@@ -21,6 +21,21 @@ describe('NoteEditor', () => {
     expect(noteEditorRef.current.getNoteContent()).toEqual(note);
   });
 
+  it('renders creation and update date', () => {
+    const noteEditorRef = React.createRef();
+    const note = {
+      id: '123',
+      title: 'hello',
+      content: '<p>bla</p>',
+      createdAt: 1586941591605,
+      lastUpdateAt: 1586941616821
+    };
+
+    const { getByLabelText } = render(<NoteEditor ref={noteEditorRef} note={note}/>);
+
+    expect(getByLabelText(/Last update date/i).textContent).toEqual('Edited Wed Apr 15 2020');
+  });
+
   it('does not show title when hideTitle property provided', () => {
     const { getByLabelText, queryByLabelText } = render(<NoteEditor hideTitle={true} />);
 

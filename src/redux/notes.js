@@ -16,7 +16,9 @@ const createNoteReducer = (state, action) => {
   const note = {
     ...action.payload,
     id: uuid(),
-    sortOrder: Date.now()
+    sortOrder: Date.now(),
+    lastUpdateAt: Date.now(),
+    createdAt: Date.now()
   };
 
   return state.concat(note);
@@ -25,7 +27,7 @@ const createNoteReducer = (state, action) => {
 const updateNoteReducer = (state, action) => {
   const note = state.find(n => n.id === action.payload.id);
   if (note) {
-    Object.assign(note, action.payload);
+    Object.assign(note, action.payload, { lastUpdateAt: Date.now() });
   }
   return state;
 };
