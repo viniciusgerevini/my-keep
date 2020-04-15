@@ -15,7 +15,8 @@ jest.mock('uuid', () => ({ v4: jest.fn() }));
 describe('Note reducers', () => {
   const createTestState = (notes = []) => {
     const state = createEmptyState();
-    return state.concat(notes);
+    state.items = state.items.concat(notes);
+    return state;
   };
 
   describe('#createNote', function() {
@@ -32,12 +33,12 @@ describe('Note reducers', () => {
       const action = createNote({ title: note.title, content: note.content });
 
       expect(reducers(state, action)).toEqual(
-        [{
+        createTestState([{
           ...note,
           lastUpdateAt: expect.any(Number),
           createdAt: expect.any(Number),
           sortOrder: expect.any(Number)
-        }]
+        }])
       );
     });
 
@@ -53,7 +54,7 @@ describe('Note reducers', () => {
 
       const action = createNote(note);
 
-      expect(reducers(state, action)[0].id).toEqual('generated id');
+      expect(reducers(state, action).items[0].id).toEqual('generated id');
     });
 
     it('inserts new item with default sort order', () => {
@@ -68,7 +69,7 @@ describe('Note reducers', () => {
 
       const action = createNote({ title: 'some new note' });
 
-      const [note1, note2] = reducers(state, action);
+      const [note1, note2] = reducers(state, action).items;
 
       expect(note1.sortOrder < note2.sortOrder).toBe(true);
     });

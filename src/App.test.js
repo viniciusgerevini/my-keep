@@ -5,9 +5,11 @@ import { saveState } from './storage/local-storage';
 
 jest.mock('./storage/local-storage', () => {
   const persistedState = {
-    notes: [
-      { id: 'somePersistedNote', title: 'some persisted note' }
-    ]
+    notes: {
+      items: [
+        { id: 'somePersistedNote', title: 'some persisted note' }
+      ]
+    }
   };
 
   return {
@@ -63,10 +65,12 @@ describe('App', () => {
       fireEvent.click(getByLabelText(noteBox, /close/i));
 
       expect(saveState).toHaveBeenCalledWith({
-        notes: expect.arrayContaining([
-          expect.objectContaining({ title: 'hello' }),
-          expect.objectContaining({ title: 'some persisted note' })
-        ])
+        notes: {
+          items: expect.arrayContaining([
+            expect.objectContaining({ title: 'hello' }),
+            expect.objectContaining({ title: 'some persisted note' })
+          ])
+        }
       });
     });
   });

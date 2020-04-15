@@ -23,8 +23,10 @@ describe('HomeGrid container', () => {
   const mockStore = configureStore();
 
   const createMockStore = (notes = []) => {
+    let state = createEmptyState();
+    state.items = notes;
     const store = mockStore({
-      notes: createEmptyState().concat(notes)
+      notes: state
     });
     return store;
   };

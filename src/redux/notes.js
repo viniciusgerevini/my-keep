@@ -9,7 +9,10 @@ export const pinNote = createAction('my-keep/notes/PIN_NOTE');
 export const unpinNote = createAction('my-keep/notes/UNPIN_NOTE');
 
 export function createEmptyState() {
-  return [];
+  return {
+    items: [],
+    // archive: []
+  };
 }
 
 const createNoteReducer = (state, action) => {
@@ -21,11 +24,13 @@ const createNoteReducer = (state, action) => {
     createdAt: Date.now()
   };
 
-  return state.concat(note);
+  state.items = state.items.concat(note);
+
+  return state;
 };
 
 const updateNoteReducer = (state, action) => {
-  const note = state.find(n => n.id === action.payload.id);
+  const note = state.items.find(n => n.id === action.payload.id);
   if (note) {
     Object.assign(note, action.payload, { lastUpdateAt: Date.now() });
   }
@@ -33,12 +38,13 @@ const updateNoteReducer = (state, action) => {
 };
 
 const deleteNoteReducer = (state, action) => {
-  return state.filter( note => note.id !== action.payload)
+  state.items = state.items.filter( note => note.id !== action.payload)
+  return state;
 };
 
 const swapNotesReducer = (state, action) => {
-  const note1 = state.find(n => n.id === action.payload.src);
-  const note2 = state.find(n => n.id === action.payload.dest);
+  const note1 = state.items.find(n => n.id === action.payload.src);
+  const note2 = state.items.find(n => n.id === action.payload.dest);
 
   const firstOrder = note1.sortOrder;
   note1.sortOrder = note2.sortOrder;
@@ -48,13 +54,13 @@ const swapNotesReducer = (state, action) => {
 };
 
 const pinNoteReducer = (state, action) => {
-  const note = state.find(n => n.id === action.payload);
+  const note = state.items.find(n => n.id === action.payload);
   note.isPinned = true;
   return state;
 };
 
 const unpinNoteReducer = (state, action) => {
-  const note = state.find(n => n.id === action.payload);
+  const note = state.items.find(n => n.id === action.payload);
   note.isPinned = false;
   return state;
 };
