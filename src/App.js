@@ -5,10 +5,10 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import throttle from 'lodash/throttle';
 
-import TopBar from './layout/components/TopBar';
-import SideBar from './layout/components/SideBar';
-import MainPane from './layout/components/MainPane';
-import theme from './layout/theme';
+import TopBar from './components/TopBar';
+import SideBar from './components/SideBar';
+import MainPane from './components/MainPane';
+import theme from './theme';
 import reducer from './reducers';
 import { loadState, saveState } from './storage/local-storage';
 

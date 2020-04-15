@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import TakeANoteBox from '../../notes/containers/TakeANoteBox';
-import HomeGrid from '../../notes/containers/HomeGrid';
-import PinnedGrid from '../../notes/containers/PinnedGrid';
+import TakeANoteBox from '../containers/TakeANoteBox';
+import HomeGrid from '../containers/HomeGrid';
 
 export const MainPaneWrapper = styled.div `
   width: auto;
@@ -14,7 +13,6 @@ export const MainPaneWrapper = styled.div `
 export default function MainPane() {
   return <MainPaneWrapper>
     <TakeANoteBox/>
-    <PinnedGrid />
     <HomeGrid />
   </MainPaneWrapper>;
 }

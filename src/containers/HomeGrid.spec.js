@@ -8,8 +8,9 @@ import {
   deleteNote,
   swapNotes,
   pinNote,
+  unpinNote,
   createEmptyState,
-} from '../redux';
+} from '../redux/notes';
 import HomeGrid from './HomeGrid';
 import DraggableCard from '../components/DraggableCard';
 
@@ -52,13 +53,13 @@ describe('HomeGrid container', () => {
     expect(DraggableCard.mock.calls[1][0].item).toEqual(note1);
   });
 
-  it('does not render pinned notes', () => {
+  it('renders pinned notes', () => {
     const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const note2 = { id: 'note2', title: 'some other note' };
     const store = createMockStore([ note1, note2 ]);
-    const { getByText, queryByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+    const { getByText } = render(<Provider store={store}><HomeGrid /></Provider>);
 
-    expect(queryByText(note1.title)).toBeNull();
+    expect(getByText(note1.title)).toBeInTheDocument();
     expect(getByText(note2.title)).toBeInTheDocument();
   });
 
@@ -125,7 +126,7 @@ describe('HomeGrid container', () => {
     expect(action.payload).toEqual({ title: note1.title, content: note1.content });
   });
 
-  it('trigger pin note', () => {
+  it('triggers pin note', () => {
     const note1 = { id: 'note1', title: 'some note' };
     const store = createMockStore([ note1 ]);
 
@@ -136,6 +137,20 @@ describe('HomeGrid container', () => {
     const action = store.getActions()[0];
 
     expect(action.type).toEqual(pinNote.toString());
+    expect(action.payload).toEqual(note1.id);
+  });
+
+  it('triggers pin note', () => {
+    const note1 = { id: 'note1', title: 'some note', isPinned: true };
+    const store = createMockStore([ note1 ]);
+
+    const { getByLabelText } = render(<Provider store={store}><HomeGrid /></Provider>);
+
+    fireEvent.click(getByLabelText(/Unpin note/i));
+
+    const action = store.getActions()[0];
+
+    expect(action.type).toEqual(unpinNote.toString());
     expect(action.payload).toEqual(note1.id);
   });
 });

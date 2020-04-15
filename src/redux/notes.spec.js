@@ -8,8 +8,7 @@ import reducers, {
   createEmptyState,
   pinNote,
   unpinNote
-} from './index';
-
+} from './notes';
 
 jest.mock('uuid', () => ({ v4: jest.fn() }));
 

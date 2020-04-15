@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { createNote } from '../redux';
+import { createNote } from '../redux/notes';
 import NoteBox from '../components/NoteBox';
 
 const mapStateToProps = (_state, props) => props;

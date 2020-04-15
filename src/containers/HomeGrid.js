@@ -1,16 +1,19 @@
 import { connect } from 'react-redux';
-import NotesGrid from '../components/NotesGrid';
+import MainNotesGrid from '../components/MainNotesGrid';
 import {
   createNote,
   updateNote,
   deleteNote,
   swapNotes,
-  pinNote
-} from '../redux';
+  pinNote,
+  unpinNote,
+} from '../redux/notes';
+
+const sortBySortOrder = (a, b) =>  b.sortOrder - a.sortOrder;
 
 const mapStateToProps = (state, props) => ({
-  notes: state.notes.filter(n => !n.isPinned)
-                    .sort((a, b) =>  b.sortOrder - a.sortOrder),
+  notes: state.notes.filter(n => !n.isPinned).sort(sortBySortOrder),
+  pinnedNotes: state.notes.filter(n => !!n.isPinned).sort(sortBySortOrder),
   ...props
 });
 
@@ -35,10 +38,14 @@ const mapDispatchToProps = dispatch => ({
 
   pinNoteAction: (id) => {
     dispatch(pinNote(id));
+  },
+
+  unpinNoteAction: (id) => {
+    dispatch(unpinNote(id));
   }
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NotesGrid);
+)(MainNotesGrid);
