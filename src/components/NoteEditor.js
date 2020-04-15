@@ -60,6 +60,13 @@ const EditorContainer = styled.div `
   padding: 5px 0px;
 `
 
+const UpdateDateWrapper = styled.div `
+  color: ${props => props.theme.secondaryTextColor};
+  font-size: 0.8em;
+  text-align: right;
+  padding-right: 10px;
+`;
+
 function NoteEditor(props, ref) {
   const {
     hideTitle,
@@ -115,7 +122,7 @@ function NoteEditor(props, ref) {
 
   return (
     <AddNoteWrapper ref={wrapper} aria-label="Note editor" onClick={onClick} {...extraProps}>
-      {hideTitle ? '' : <TitleInput placeholder="Title" ref={title} defaultValue={note ? note.title : undefined} aria-label="title"/>}
+      { hideTitle ? '' : <TitleInput placeholder="Title" ref={title} defaultValue={note ? note.title : undefined} aria-label="title"/>}
 
       { hideEditor ? <EditorPlaceholder>{'Take a note...'}</EditorPlaceholder>:
         <EditorContainer>
@@ -129,7 +136,13 @@ function NoteEditor(props, ref) {
         </EditorContainer>
       }
 
-      {hideFooter ? '' :
+      { hideFooter || !note ? '' :
+        <UpdateDateWrapper aria-label="Last update date">
+          {`Edited ${parseDate(note.lastUpdateAt)}`}
+        </UpdateDateWrapper>
+      }
+
+      { hideFooter ? '' :
         <Footer>
           <Actions aria-label="Actions">
             <UndoIcon onClick={undo} aria-label="Undo"/>
@@ -150,5 +163,9 @@ NoteEditor.propTypes = {
   closeAction: PropTypes.func,
   onClick: PropTypes.func,
   note: PropTypes.object.isRequired,
+};
+
+const parseDate = (timestamp) => {
+  return new Date(timestamp).toDateString();
 };
 

@@ -13,7 +13,6 @@ import reducers, {
 jest.mock('uuid', () => ({ v4: jest.fn() }));
 
 describe('Note reducers', () => {
-
   const createTestState = (notes = []) => {
     const state = createEmptyState();
     return state.concat(notes);
@@ -32,7 +31,14 @@ describe('Note reducers', () => {
 
       const action = createNote({ title: note.title, content: note.content });
 
-      expect(reducers(state, action)).toEqual([{ ...note, sortOrder: expect.any(Number) }]);
+      expect(reducers(state, action)).toEqual(
+        [{
+          ...note,
+          lastUpdateAt: expect.any(Number),
+          createdAt: expect.any(Number),
+          sortOrder: expect.any(Number)
+        }]
+      );
     });
 
     it('always uses generated id', () => {
@@ -90,7 +96,9 @@ describe('Note reducers', () => {
 
       const action = updateNote(note2update);
 
-      expect(reducers(state, action)).toEqual(createTestState([ note1, note2update ]));
+      expect(reducers(state, action)).toEqual(
+        createTestState([ note1, { ...note2update, lastUpdateAt: expect.any(Number) }])
+      );
     });
 
     it('does nothing if note not found', () => {
