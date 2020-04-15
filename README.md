@@ -1,6 +1,7 @@
 # MyKeep
 
 ![Build and Deploy](https://github.com/viniciusgerevini/my-keep/workflows/Build%20and%20Deploy/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/viniciusgerevini/my-keep/badge.svg?branch=master)](https://coveralls.io/github/viniciusgerevini/my-keep?branch=master)
 
 A note taking app inspired by Google Keep.
 
