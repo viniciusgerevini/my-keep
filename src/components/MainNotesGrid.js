@@ -6,22 +6,35 @@ import NotesGrid from './NotesGrid';
 export default function MainNotesGrid(props) {
   const {
     notes,
+    pinnedNotes,
     deleteNote,
     swapNotes,
     updateNote,
     duplicateNote,
     pinNoteAction,
+    unpinNoteAction,
   } = props;
 
   return (
-    <NotesGrid
-      notes={notes}
-      swapNotes={swapNotes}
-      updateNote={updateNote}
-      deleteNote={deleteNote}
-      duplicateNote={duplicateNote}
-      pinNoteAction={pinNoteAction}
-    />);
+    <React.Fragment>
+      <NotesGrid
+        notes={pinnedNotes || []}
+        swapNotes={swapNotes}
+        updateNote={updateNote}
+        deleteNote={deleteNote}
+        duplicateNote={duplicateNote}
+        pinNoteAction={unpinNoteAction}
+      />
+      <NotesGrid
+        notes={notes}
+        swapNotes={swapNotes}
+        updateNote={updateNote}
+        deleteNote={deleteNote}
+        duplicateNote={duplicateNote}
+        pinNoteAction={pinNoteAction}
+      />
+    </React.Fragment>
+  );
 }
 
 MainNotesGrid.propTypes = {

@@ -5,12 +5,15 @@ import {
   updateNote,
   deleteNote,
   swapNotes,
-  pinNote
+  pinNote,
+  unpinNote,
 } from '../redux/notes';
 
+const sortBySortOrder = (a, b) =>  b.sortOrder - a.sortOrder;
+
 const mapStateToProps = (state, props) => ({
-  notes: state.notes.filter(n => !n.isPinned)
-                    .sort((a, b) =>  b.sortOrder - a.sortOrder),
+  notes: state.notes.filter(n => !n.isPinned).sort(sortBySortOrder),
+  pinnedNotes: state.notes.filter(n => !!n.isPinned).sort(sortBySortOrder),
   ...props
 });
 
@@ -35,6 +38,10 @@ const mapDispatchToProps = dispatch => ({
 
   pinNoteAction: (id) => {
     dispatch(pinNote(id));
+  },
+
+  unpinNoteAction: (id) => {
+    dispatch(unpinNote(id));
   }
 });
 
