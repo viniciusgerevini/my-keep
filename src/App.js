@@ -4,6 +4,11 @@ import styled from 'styled-components';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import throttle from 'lodash/throttle';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
@@ -11,6 +16,7 @@ import HomePage from './pages/Home';
 import theme from './theme';
 import reducer from './reducers';
 import { loadState, saveState } from './storage/local-storage';
+import Archive from './pages/Archive';
 
 const store = configureStore({
   reducer,
@@ -50,13 +56,22 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <AppWrapper>
-          <TopBar onSidebarButtonClicked={toggleSidebar} />
-          { isSidebarVisible ? <SideBar /> : '' }
-          <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
-            <HomePage/>
-          </MainPaneWrapper>
-        </AppWrapper>
+        <Router>
+          <AppWrapper>
+            <TopBar onSidebarButtonClicked={toggleSidebar} />
+            { isSidebarVisible ? <SideBar /> : '' }
+            <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
+              <Switch>
+                <Route path="/archive">
+                  <Archive/>
+                </Route>
+                <Route path="/">
+                  <HomePage/>
+                </Route>
+              </Switch>
+            </MainPaneWrapper>
+          </AppWrapper>
+        </Router>
       </ThemeProvider>
     </Provider>
   );
