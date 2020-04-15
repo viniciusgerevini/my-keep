@@ -15,9 +15,12 @@ export default function MainNotesGrid(props) {
     unpinNoteAction,
   } = props;
 
+  const isTherePinnedNotes = pinnedNotes && pinnedNotes.length;
+
   return (
     <React.Fragment>
       <NotesGrid
+        gridTitle={ isTherePinnedNotes ? 'Pinned' : undefined }
         notes={pinnedNotes || []}
         swapNotes={swapNotes}
         updateNote={updateNote}
@@ -26,6 +29,7 @@ export default function MainNotesGrid(props) {
         pinNoteAction={unpinNoteAction}
       />
       <NotesGrid
+        gridTitle={ isTherePinnedNotes ? 'Others' : undefined }
         notes={notes}
         swapNotes={swapNotes}
         updateNote={updateNote}

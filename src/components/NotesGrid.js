@@ -12,7 +12,15 @@ const GridWrapper = styled.div `
   grid-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
   grid-auto-rows: 180px;
+`;
+
+const GridLabel = styled.h2 `
   margin-top: 50px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  color: ${props => props.theme.secondaryTextColor};
 `;
 
 export default function NotesGrid(props) {
@@ -25,6 +33,7 @@ export default function NotesGrid(props) {
     updateNote,
     duplicateNote,
     pinNoteAction,
+    gridTitle
   } = props;
 
   useEffect(() => {
@@ -42,6 +51,7 @@ export default function NotesGrid(props) {
 
   return (
     <DndProvider backend={Backend}>
+      <GridLabel>{gridTitle}</GridLabel>
       <GridWrapper ref={gridRef}>
         {notes.map((note) =>
           <NoteCard
@@ -51,6 +61,7 @@ export default function NotesGrid(props) {
             duplicateNote={duplicateNote}
             togglePinNote={pinNoteAction}
             className="grid-item"
+            aria-label="note"
             note={note}
             onClick={() => openNote(note)}
           />
@@ -62,6 +73,7 @@ export default function NotesGrid(props) {
 }
 
 NotesGrid.propTypes = {
+  gridTitle: PropTypes.string,
   notes: PropTypes.array.isRequired,
   deleteNote: PropTypes.func.isRequired,
   duplicateNote: PropTypes.func.isRequired,
