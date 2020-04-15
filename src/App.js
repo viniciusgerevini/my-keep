@@ -7,7 +7,7 @@ import throttle from 'lodash/throttle';
 
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
-import MainPane from './components/MainPane';
+import HomePage from './pages/Home';
 import theme from './theme';
 import reducer from './reducers';
 import { loadState, saveState } from './storage/local-storage';
@@ -54,7 +54,7 @@ function App() {
           <TopBar onSidebarButtonClicked={toggleSidebar} />
           { isSidebarVisible ? <SideBar /> : '' }
           <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
-            <MainPane/>
+            <HomePage/>
           </MainPaneWrapper>
         </AppWrapper>
       </ThemeProvider>
