@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, getByLabelText } from '@testing-library/react';
+import { render, fireEvent, getByLabelText, getByText } from '@testing-library/react';
 import App from './App';
 import { saveState } from './storage/local-storage';
 
@@ -25,6 +25,17 @@ describe('App', () => {
     const { getByText } = render(<App />);
     const linkElement = getByText(/MyKeep/i);
     expect(linkElement).toBeInTheDocument();
+  });
+
+  it('renders archive page', () => {
+    const { container, getByLabelText } = render(<App />);
+
+    fireEvent.click(getByLabelText(/Sidebar Toggle Button/g));
+    fireEvent.click(getByText(getByLabelText("Sidebar"), 'Archive'));
+
+    expect(container.querySelector('h2').textContent).toEqual('Archive');
+
+    fireEvent.click(getByText(getByLabelText("Sidebar"), 'Notes'));
   });
 
   describe('Sidebar', () => {

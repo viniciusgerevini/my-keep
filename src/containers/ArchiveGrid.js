@@ -11,6 +11,7 @@ import {
 const sortBySortOrder = (a, b) =>  b.sortOrder - a.sortOrder;
 
 const mapStateToProps = (state, props) => ({
+  gridTitle: 'Archive',
   notes: state.notes.filter(n => n.isArchived).sort(sortBySortOrder),
   ...props
 });
