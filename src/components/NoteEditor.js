@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { Editor, EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import { stateFromHTML } from 'draft-js-import-html';
-import { UndoIcon, RedoIcon, ActionButton } from '../styled';
+import { UndoActionIcon, RedoActionIcon, ActionButton } from '../styled';
 
 import 'draft-js/dist/Draft.css';
 
@@ -145,8 +145,8 @@ function NoteEditor(props, ref) {
       { hideFooter ? '' :
         <Footer>
           <Actions aria-label="Actions">
-            <UndoIcon onClick={undo} aria-label="Undo"/>
-            <RedoIcon onClick={redo} aria-label="Redo"/>
+            <UndoActionIcon onClick={undo} aria-label="Undo"/>
+            <RedoActionIcon onClick={redo} aria-label="Redo"/>
           </Actions>
           <ActionButton onClick={closeAction} aria-label="close">Close</ActionButton>
         </Footer>

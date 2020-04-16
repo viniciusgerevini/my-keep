@@ -42,6 +42,7 @@ const MainPaneWrapper = styled.div `
   width: auto;
   height: 100%;
   overflow: hidden;
+  padding: 10px;
 
   @media(min-width: 750px) {
     margin-left: ${props => props.isSidebarOpen ? '300px' : '0px'};
@@ -77,7 +78,7 @@ function App() {
                       <ArchiveGrid/>
                     </MainPaneInnerWrapper>
                   </Route>
-                  <Route path="/">
+                  <Route exact path="/">
                     <HomePage/>
                   </Route>
                 </Switch>
