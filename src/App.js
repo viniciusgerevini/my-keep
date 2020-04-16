@@ -9,6 +9,8 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import Backend from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
@@ -63,24 +65,26 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Router>
-          <AppWrapper>
-            <TopBar onSidebarButtonClicked={toggleSidebar} />
-            { isSidebarVisible ? <SideBar /> : '' }
-            <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
-              <Switch>
-                <Route path="/archive">
-                  <MainPaneInnerWrapper>
-                    <ArchiveGrid/>
-                  </MainPaneInnerWrapper>
-                </Route>
-                <Route path="/">
-                  <HomePage/>
-                </Route>
-              </Switch>
-            </MainPaneWrapper>
-          </AppWrapper>
-        </Router>
+        <DndProvider backend={Backend}>
+          <Router>
+            <AppWrapper>
+              <TopBar onSidebarButtonClicked={toggleSidebar} />
+              { isSidebarVisible ? <SideBar /> : '' }
+              <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
+                <Switch>
+                  <Route path="/archive">
+                    <MainPaneInnerWrapper>
+                      <ArchiveGrid/>
+                    </MainPaneInnerWrapper>
+                  </Route>
+                  <Route path="/">
+                    <HomePage/>
+                  </Route>
+                </Switch>
+              </MainPaneWrapper>
+            </AppWrapper>
+          </Router>
+        </DndProvider>
       </ThemeProvider>
     </Provider>
   );

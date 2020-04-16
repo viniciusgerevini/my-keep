@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Backend from 'react-dnd-html5-backend'
-import { DndProvider } from 'react-dnd'
 
 import NoteCard from './NotesGridCard';
 import EditNoteModal from './EditNoteModal';
@@ -52,7 +50,7 @@ export default function NotesGrid(props) {
   };
 
   return (
-    <DndProvider backend={Backend}>
+    <React.Fragment>
       <GridLabel>{gridTitle}</GridLabel>
       <GridWrapper ref={gridRef}>
         {notes.map((note) =>
@@ -72,7 +70,7 @@ export default function NotesGrid(props) {
         )}
       </GridWrapper>
       { noteToEdit ? <EditNoteModal note={noteToEdit} updateNote={updateNote} onModalClose={onModalClose}/> : null }
-    </DndProvider>
+    </React.Fragment>
   );
 }
 
