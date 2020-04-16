@@ -13,8 +13,8 @@ import {
 const sortBySortOrder = (a, b) =>  b.sortOrder - a.sortOrder;
 
 const mapStateToProps = (state, props) => ({
-  notes: state.notes.filter(n => !n.isPinned).sort(sortBySortOrder),
-  pinnedNotes: state.notes.filter(n => !!n.isPinned).sort(sortBySortOrder),
+  notes: state.notes.filter(n => !n.isPinned && !n.isArchived).sort(sortBySortOrder),
+  pinnedNotes: state.notes.filter(n => !!n.isPinned && !n.isArchived).sort(sortBySortOrder),
   ...props
 });
 

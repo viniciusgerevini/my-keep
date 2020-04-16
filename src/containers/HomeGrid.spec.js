@@ -62,6 +62,16 @@ describe('HomeGrid container', () => {
     expect(getByText(note2.title)).toBeInTheDocument();
   });
 
+  it('does not render archived notes', () => {
+    const note1 = { id: 'note1', title: 'some note', isPinned: true, isArchived: true };
+    const note2 = { id: 'note2', title: 'some other note', isArchived: true };
+    const store = createMockStore([ note1, note2 ]);
+    const { queryByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+
+    expect(queryByText(note1.title)).toBeNull();
+    expect(queryByText(note2.title)).toBeNull();
+  });
+
   it('trigger swap notes', () => {
     const note1 = { id: 'note1', title: 'some note' };
     const store = createMockStore([ note1 ]);
