@@ -83,21 +83,21 @@ export default function NoteCard(props) {
           title="More"
           onClick={toggleMenu}
         />
-        { archiveNote ? (
-          <ArchiveIcon
-            role="button"
-            aria-label="Archive note"
-            title="Archive note"
-            onClick={archive}
-          />
-        ) : (
+        { note.isArchived ? (
           <UnarchiveIcon
             role="button"
             aria-label="Unarchive note"
             title="Unarchive note"
             onClick={unarchive}
           />
-        )
+          ) : (
+            <ArchiveIcon
+              role="button"
+              aria-label="Archive note"
+              title="Archive note"
+              onClick={archive}
+            />
+          )
         }
 
 

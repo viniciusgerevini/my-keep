@@ -162,7 +162,7 @@ describe('NotesGridCard component', () => {
   });
 
   it('triggers unarchive note when unarchive option is clicked', () => {
-    const note = { id: '123', title: 'hello', content: 'bla' };
+    const note = { id: '123', title: 'hello', content: 'bla', isArchived: true };
     const unarchiveNoteStub = jest.fn();
     const { getByLabelText } = render(
       <NotesGridCard
