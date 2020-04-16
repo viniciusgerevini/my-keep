@@ -242,8 +242,8 @@ describe('Note reducers', () => {
 
       const newState = reducers(state, action);
 
-      expect(newState.items).not.toContain(note1);
-      expect(newState.archive).toContain(note1);
+      expect(newState.items).not.toContainEqual(note1);
+      expect(newState.archive).toContainEqual({ ...note1, isArchived: true });
     });
 
     it('does not fail if note not found', () => {
@@ -259,8 +259,7 @@ describe('Note reducers', () => {
 
       const newState = reducers(state, action);
 
-      expect(newState.items).toContain(note1);
-      expect(newState.archive).not.toContain(note1);
+      expect(newState.items).toContainEqual(note1);
     });
   });
 
@@ -270,6 +269,7 @@ describe('Note reducers', () => {
         id: 'note1',
         title: 'some note',
         content: 'bla bla bla',
+        isArchived: true
       };
 
       const state = createTestState([], [ note1 ]);
@@ -278,8 +278,8 @@ describe('Note reducers', () => {
 
       const newState = reducers(state, action);
 
-      expect(newState.items).toContain(note1);
-      expect(newState.archive).not.toContain(note1);
+      expect(newState.items).toContainEqual({...note1, isArchived: false });
+      expect(newState.archive).not.toContainEqual(note1);
     });
 
     it('does not fail if note not found', () => {

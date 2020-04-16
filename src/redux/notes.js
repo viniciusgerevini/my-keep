@@ -74,8 +74,10 @@ const archiveNoteReducer = (state, action) => {
     return state;
   }
 
-  const note = state.items.splice(index, 1);
-  state.archive = state.archive.concat(note);
+  let note = state.items.splice(index, 1)[0];
+  note.isArchived = true;
+  state.archive.push(note);
+
   return state;
 };
 
@@ -86,8 +88,10 @@ const unarchiveNoteReducer = (state, action) => {
     return state;
   }
 
-  const note = state.archive.splice(index, 1);
-  state.items = state.items.concat(note);
+  let note = state.archive.splice(index, 1)[0];
+  note.isArchived = false;
+  state.items.push(note);
+
   return state;
 };
 
