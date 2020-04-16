@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdUndo, MdRedo } from 'react-icons/md';
+import { MdUndo, MdRedo, MdUnarchive } from 'react-icons/md';
+import { FiArchive } from 'react-icons/fi';
 import { FaEllipsisV } from 'react-icons/fa';
 import { AiFillPushpin, AiOutlinePushpin } from 'react-icons/ai';
 
@@ -25,6 +26,9 @@ export const RedoIcon = (props) => <IconWrapper {...props}><MdRedo/></IconWrappe
 export const MenuBallsIcon = (props) => <IconWrapper {...props}><FaEllipsisV/></IconWrapper>;
 export const PinIcon = (props) => <IconWrapper {...props}><AiOutlinePushpin/></IconWrapper>;
 export const UnpinIcon = (props) => <IconWrapper {...props}><AiFillPushpin/></IconWrapper>;
+
+export const ArchiveIcon = (props) => <IconWrapper {...props}><FiArchive/></IconWrapper>;
+export const UnarchiveIcon = (props) => <IconWrapper {...props}><MdUnarchive/></IconWrapper>;
 
 export const ActionButton = styled.button `
   color: ${props=> props.theme.textColor};

@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import {
   MenuBallsIcon,
   PinIcon,
-  UnpinIcon
+  UnpinIcon,
+  ArchiveIcon,
+  UnarchiveIcon
 } from '../styled';
 import HoverMenu from '../components/HoverMenu';
 import { useClickOutside } from '../helpers/useClickOutside';
@@ -18,6 +20,8 @@ export default function NoteCard(props) {
     swapNotes,
     duplicateNote,
     deleteNote,
+    archiveNote,
+    unarchiveNote,
     ...p
   } = props;
   const [isMenuVisible, setMenuVisible] = useState(false);
@@ -54,6 +58,16 @@ export default function NoteCard(props) {
     togglePinNote(note.id);
   };
 
+  const archive = (e) => {
+    e.stopPropagation();
+    archiveNote(note.id);
+  };
+
+  const unarchive = (e) => {
+    e.stopPropagation();
+    unarchiveNote(note.id);
+  };
+
   return (
     <DraggableCard {...p} item={note} onDrop={swapNotes} className="note-parent">
       <NoteInnerWrapper>
@@ -69,6 +83,24 @@ export default function NoteCard(props) {
           title="More"
           onClick={toggleMenu}
         />
+        { archiveNote ? (
+          <ArchiveIcon
+            role="button"
+            aria-label="Archive note"
+            title="Archive note"
+            onClick={archive}
+          />
+        ) : (
+          <UnarchiveIcon
+            role="button"
+            aria-label="Unarchive note"
+            title="Unarchive note"
+            onClick={unarchive}
+          />
+        )
+        }
+
+
       </NoteActions>
       { isMenuVisible ? <HoverMenu ref={hoverMenuRef} items={menuActions}/> : undefined }
       { togglePinNote ?
@@ -88,6 +120,8 @@ NoteCard.propTypes = {
   swapNotes: PropTypes.func.isRequired,
   deleteNote: PropTypes.func,
   togglePinNote: PropTypes.func,
+  archiveNote: PropTypes.func,
+  unarchiveNote: PropTypes.func,
 };
 
 

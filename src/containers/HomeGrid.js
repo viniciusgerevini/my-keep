@@ -7,6 +7,7 @@ import {
   swapNotes,
   pinNote,
   unpinNote,
+  archiveNote,
 } from '../redux/notes';
 
 const sortBySortOrder = (a, b) =>  b.sortOrder - a.sortOrder;
@@ -42,6 +43,10 @@ const mapDispatchToProps = dispatch => ({
 
   unpinNoteAction: (id) => {
     dispatch(unpinNote(id));
+  },
+
+  archiveNote: (id) => {
+    dispatch(archiveNote(id));
   }
 });
 

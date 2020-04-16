@@ -144,4 +144,36 @@ describe('NotesGridCard component', () => {
 
     expect(pinNoteStub).toHaveBeenCalledWith(note.id);
   });
+
+  it('triggers archive note when archive option clicked', () => {
+    const note = { id: '123', title: 'hello', content: 'bla'};
+    const archiveNoteStub = jest.fn();
+    const { getByLabelText } = render(
+      <NotesGridCard
+        note={note}
+        index={0}
+        archiveNote={archiveNoteStub}
+        swapNotes={fakeSwapNotes}/>
+    );
+
+    fireEvent.click(getByLabelText(/Archive note/i));
+
+    expect(archiveNoteStub).toHaveBeenCalledWith(note.id);
+  });
+
+  it('triggers unarchive note when unarchive option is clicked', () => {
+    const note = { id: '123', title: 'hello', content: 'bla' };
+    const unarchiveNoteStub = jest.fn();
+    const { getByLabelText } = render(
+      <NotesGridCard
+        note={note}
+        index={0}
+        unarchiveNote={unarchiveNoteStub}
+        swapNotes={fakeSwapNotes}/>
+    );
+
+    fireEvent.click(getByLabelText(/Unarchive note/i));
+
+    expect(unarchiveNoteStub).toHaveBeenCalledWith(note.id);
+  });
 });

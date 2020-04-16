@@ -10,6 +10,7 @@ import {
   pinNote,
   unpinNote,
   createEmptyState,
+  archiveNote,
 } from '../redux/notes';
 import HomeGrid from './HomeGrid';
 import DraggableCard from '../components/DraggableCard';
@@ -142,7 +143,7 @@ describe('HomeGrid container', () => {
     expect(action.payload).toEqual(note1.id);
   });
 
-  it('triggers pin note', () => {
+  it('triggers unpin note', () => {
     const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const store = createMockStore([ note1 ]);
 
@@ -153,6 +154,20 @@ describe('HomeGrid container', () => {
     const action = store.getActions()[0];
 
     expect(action.type).toEqual(unpinNote.toString());
+    expect(action.payload).toEqual(note1.id);
+  });
+
+  it('triggers archive note', () => {
+    const note1 = { id: 'note1', title: 'some note' };
+    const store = createMockStore([ note1 ]);
+
+    const { getByLabelText } = render(<Provider store={store}><HomeGrid /></Provider>);
+
+    fireEvent.click(getByLabelText(/Archive note/i));
+
+    const action = store.getActions()[0];
+
+    expect(action.type).toEqual(archiveNote.toString());
     expect(action.payload).toEqual(note1.id);
   });
 });

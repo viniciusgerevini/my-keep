@@ -33,6 +33,8 @@ export default function NotesGrid(props) {
     updateNote,
     duplicateNote,
     pinNoteAction,
+    archiveNote,
+    unarchiveNote,
     gridTitle
   } = props;
 
@@ -60,6 +62,8 @@ export default function NotesGrid(props) {
             deleteNote={deleteNote}
             duplicateNote={duplicateNote}
             togglePinNote={pinNoteAction}
+            archiveNote={archiveNote}
+            unarchiveNote={unarchiveNote}
             className="grid-item"
             aria-label="note"
             note={note}
@@ -79,7 +83,9 @@ NotesGrid.propTypes = {
   duplicateNote: PropTypes.func.isRequired,
   swapNotes: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired,
-  pinNoteAction: PropTypes.func
+  pinNoteAction: PropTypes.func,
+  archiveNote: PropTypes.func,
+  unarchiveNote: PropTypes.func
 };
 
 const adjustGridItemsHeight = (items) => {
