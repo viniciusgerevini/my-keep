@@ -16,7 +16,7 @@ import HomePage from './pages/Home';
 import theme from './theme';
 import reducer from './reducers';
 import { loadState, saveState } from './storage/local-storage';
-import Archive from './pages/Archive';
+import ArchiveGrid from './containers/ArchiveGrid';
 
 const store = configureStore({
   reducer,
@@ -46,6 +46,13 @@ const MainPaneWrapper = styled.div `
   }
 `;
 
+export const MainPaneInnerWrapper = styled.div `
+  width: auto;
+  background-color: ${props => props.theme.background};
+  margin-top: 80px;
+  padding: 20px 10px;
+`;
+
 function App() {
   const [ isSidebarVisible, setSidebarVisible ] = useState(false);
 
@@ -63,7 +70,9 @@ function App() {
             <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
               <Switch>
                 <Route path="/archive">
-                  <Archive/>
+                  <MainPaneInnerWrapper>
+                    <ArchiveGrid/>
+                  </MainPaneInnerWrapper>
                 </Route>
                 <Route path="/">
                   <HomePage/>

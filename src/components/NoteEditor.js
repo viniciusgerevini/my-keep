@@ -97,9 +97,9 @@ function NoteEditor(props, ref) {
       const content = editorState.getCurrentContent();
       const titleContent = title.current.value;
       const update = {
-        ...(note ? { id: note.id } : {} ),
+        ...(note ? { id: note.id, isArchived: note.isArchived } : {} ),
         title: titleContent  === "" ? undefined : titleContent,
-        content: content.hasText() ? stateToHTML(content) : undefined
+        content: content.hasText() ? stateToHTML(content) : undefined,
       };
 
       return update;
