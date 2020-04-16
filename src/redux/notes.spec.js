@@ -15,11 +15,9 @@ import reducers, {
 jest.mock('uuid', () => ({ v4: jest.fn() }));
 
 describe('Note reducers', () => {
-  const createTestState = (notes = [], archive = []) => {
+  const createTestState = (notes = []) => {
     const state = createEmptyState();
-    state.items = state.items.concat(notes);
-    state.archive = state.archive.concat(archive);
-    return state;
+    return state.concat(notes);
   };
 
   describe('#createNote', function() {
@@ -57,7 +55,7 @@ describe('Note reducers', () => {
 
       const action = createNote(note);
 
-      expect(reducers(state, action).items[0].id).toEqual('generated id');
+      expect(reducers(state, action)[0].id).toEqual('generated id');
     });
 
     it('inserts new item with default sort order', () => {
@@ -72,7 +70,7 @@ describe('Note reducers', () => {
 
       const action = createNote({ title: 'some new note' });
 
-      const [note1, note2] = reducers(state, action).items;
+      const [note1, note2] = reducers(state, action);
 
       expect(note1.sortOrder < note2.sortOrder).toBe(true);
     });
@@ -229,7 +227,7 @@ describe('Note reducers', () => {
   });
 
   describe('#archiveNote', () => {
-    it('moves note to archive list', () => {
+    it('marks notes as archived', () => {
       const note1 = {
         id: 'note1',
         title: 'some note',
@@ -240,10 +238,9 @@ describe('Note reducers', () => {
 
       const action = archiveNote(note1.id);
 
-      const newState = reducers(state, action);
+      const notes = reducers(state, action);
 
-      expect(newState.items).not.toContainEqual(note1);
-      expect(newState.archive).toContainEqual({ ...note1, isArchived: true });
+      expect(notes).toContainEqual({ ...note1, isArchived: true });
     });
 
     it('does not fail if note not found', () => {
@@ -254,17 +251,14 @@ describe('Note reducers', () => {
       };
 
       const state = createTestState([ note1 ]);
-
       const action = archiveNote('some random id');
 
-      const newState = reducers(state, action);
-
-      expect(newState.items).toContainEqual(note1);
+      expect(reducers(state, action)).toContainEqual(note1);
     });
   });
 
   describe('#unarchiveNote', () => {
-    it('moves note from archive to main items list', () => {
+    it('marks note as not archived', () => {
       const note1 = {
         id: 'note1',
         title: 'some note',
@@ -272,14 +266,11 @@ describe('Note reducers', () => {
         isArchived: true
       };
 
-      const state = createTestState([], [ note1 ]);
+      const state = createTestState([ note1 ]);
 
       const action = unarchiveNote(note1.id);
 
-      const newState = reducers(state, action);
-
-      expect(newState.items).toContainEqual({...note1, isArchived: false });
-      expect(newState.archive).not.toContainEqual(note1);
+      expect(reducers(state, action)).toContainEqual({...note1, isArchived: false });
     });
 
     it('does not fail if note not found', () => {
@@ -293,10 +284,7 @@ describe('Note reducers', () => {
 
       const action = unarchiveNote('some random id');
 
-      const newState = reducers(state, action);
-
-      expect(newState.items).not.toContain(note1);
-      expect(newState.archive).toContain(note1);
+      expect(reducers(state, action)).not.toContain(note1);
     });
   });
 

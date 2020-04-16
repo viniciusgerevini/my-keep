@@ -11,10 +11,7 @@ export const archiveNote = createAction('my-keep/notes/ARCHIVE_NOTE');
 export const unarchiveNote = createAction('my-keep/notes/UNARCHIVE_NOTE');
 
 export function createEmptyState() {
-  return {
-    items: [],
-    archive: []
-  };
+  return [];
 }
 
 const createNoteReducer = (state, action) => {
@@ -26,13 +23,11 @@ const createNoteReducer = (state, action) => {
     createdAt: Date.now()
   };
 
-  state.items = state.items.concat(note);
-
-  return state;
+  return state.concat(note);
 };
 
 const updateNoteReducer = (state, action) => {
-  const note = state.items.find(n => n.id === action.payload.id);
+  const note = state.find(n => n.id === action.payload.id);
   if (note) {
     Object.assign(note, action.payload, { lastUpdateAt: Date.now() });
   }
@@ -40,13 +35,13 @@ const updateNoteReducer = (state, action) => {
 };
 
 const deleteNoteReducer = (state, action) => {
-  state.items = state.items.filter( note => note.id !== action.payload)
+  state = state.filter( note => note.id !== action.payload)
   return state;
 };
 
 const swapNotesReducer = (state, action) => {
-  const note1 = state.items.find(n => n.id === action.payload.src);
-  const note2 = state.items.find(n => n.id === action.payload.dest);
+  const note1 = state.find(n => n.id === action.payload.src);
+  const note2 = state.find(n => n.id === action.payload.dest);
 
   const firstOrder = note1.sortOrder;
   note1.sortOrder = note2.sortOrder;
@@ -56,42 +51,30 @@ const swapNotesReducer = (state, action) => {
 };
 
 const pinNoteReducer = (state, action) => {
-  const note = state.items.find(n => n.id === action.payload);
+  const note = state.find(n => n.id === action.payload);
   note.isPinned = true;
   return state;
 };
 
 const unpinNoteReducer = (state, action) => {
-  const note = state.items.find(n => n.id === action.payload);
+  const note = state.find(n => n.id === action.payload);
   note.isPinned = false;
   return state;
 };
 
 const archiveNoteReducer = (state, action) => {
-  const index = state.items.findIndex(n => n.id === action.payload);
-
-  if (index === -1) {
-    return state;
+  const note = state.find(n => n.id === action.payload);
+  if (note) {
+    note.isArchived = true;
   }
-
-  let note = state.items.splice(index, 1)[0];
-  note.isArchived = true;
-  state.archive.push(note);
-
   return state;
 };
 
 const unarchiveNoteReducer = (state, action) => {
-  const index = state.archive.findIndex(n => n.id === action.payload);
-
-  if (index === -1) {
-    return state;
+  const note = state.find(n => n.id === action.payload);
+  if (note) {
+    note.isArchived = false;
   }
-
-  let note = state.archive.splice(index, 1)[0];
-  note.isArchived = false;
-  state.items.push(note);
-
   return state;
 };
 
