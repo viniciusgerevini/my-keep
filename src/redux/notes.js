@@ -7,6 +7,8 @@ export const deleteNote = createAction('my-keep/notes/DELETE');
 export const swapNotes = createAction('my-keep/notes/SWAP_NOTES_POSITION');
 export const pinNote = createAction('my-keep/notes/PIN_NOTE');
 export const unpinNote = createAction('my-keep/notes/UNPIN_NOTE');
+export const archiveNote = createAction('my-keep/notes/ARCHIVE_NOTE');
+export const unarchiveNote = createAction('my-keep/notes/UNARCHIVE_NOTE');
 
 export function createEmptyState() {
   return [];
@@ -33,7 +35,8 @@ const updateNoteReducer = (state, action) => {
 };
 
 const deleteNoteReducer = (state, action) => {
-  return state.filter( note => note.id !== action.payload)
+  state = state.filter( note => note.id !== action.payload)
+  return state;
 };
 
 const swapNotesReducer = (state, action) => {
@@ -59,6 +62,22 @@ const unpinNoteReducer = (state, action) => {
   return state;
 };
 
+const archiveNoteReducer = (state, action) => {
+  const note = state.find(n => n.id === action.payload);
+  if (note) {
+    note.isArchived = true;
+  }
+  return state;
+};
+
+const unarchiveNoteReducer = (state, action) => {
+  const note = state.find(n => n.id === action.payload);
+  if (note) {
+    note.isArchived = false;
+  }
+  return state;
+};
+
 const noteReducers = createReducer(createEmptyState(), {
   [createNote]: createNoteReducer,
   [updateNote]: updateNoteReducer,
@@ -66,6 +85,8 @@ const noteReducers = createReducer(createEmptyState(), {
   [swapNotes]: swapNotesReducer,
   [pinNote]: pinNoteReducer,
   [unpinNote]: unpinNoteReducer,
+  [archiveNote]: archiveNoteReducer,
+  [unarchiveNote]: unarchiveNoteReducer,
 });
 
 export default noteReducers;

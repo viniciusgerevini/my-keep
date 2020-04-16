@@ -4,13 +4,21 @@ import styled from 'styled-components';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import throttle from 'lodash/throttle';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import Backend from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
-import MainPane from './components/MainPane';
+import HomePage from './pages/Home';
 import theme from './theme';
 import reducer from './reducers';
 import { loadState, saveState } from './storage/local-storage';
+import ArchiveGrid from './containers/ArchiveGrid';
 
 const store = configureStore({
   reducer,
@@ -34,10 +42,18 @@ const MainPaneWrapper = styled.div `
   width: auto;
   height: 100%;
   overflow: hidden;
+  padding: 10px;
 
   @media(min-width: 750px) {
     margin-left: ${props => props.isSidebarOpen ? '300px' : '0px'};
   }
+`;
+
+export const MainPaneInnerWrapper = styled.div `
+  width: auto;
+  background-color: ${props => props.theme.background};
+  margin-top: 80px;
+  padding: 20px 10px;
 `;
 
 function App() {
@@ -50,13 +66,26 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <AppWrapper>
-          <TopBar onSidebarButtonClicked={toggleSidebar} />
-          { isSidebarVisible ? <SideBar /> : '' }
-          <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
-            <MainPane/>
-          </MainPaneWrapper>
-        </AppWrapper>
+        <DndProvider backend={Backend}>
+          <Router>
+            <AppWrapper>
+              <TopBar onSidebarButtonClicked={toggleSidebar} />
+              { isSidebarVisible ? <SideBar /> : '' }
+              <MainPaneWrapper isSidebarOpen={isSidebarVisible}>
+                <Switch>
+                  <Route path="/archive">
+                    <MainPaneInnerWrapper>
+                      <ArchiveGrid/>
+                    </MainPaneInnerWrapper>
+                  </Route>
+                  <Route exact path="/">
+                    <HomePage/>
+                  </Route>
+                </Switch>
+              </MainPaneWrapper>
+            </AppWrapper>
+          </Router>
+        </DndProvider>
       </ThemeProvider>
     </Provider>
   );

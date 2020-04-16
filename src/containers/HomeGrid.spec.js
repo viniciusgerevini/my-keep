@@ -10,6 +10,7 @@ import {
   pinNote,
   unpinNote,
   createEmptyState,
+  archiveNote,
 } from '../redux/notes';
 import HomeGrid from './HomeGrid';
 import DraggableCard from '../components/DraggableCard';
@@ -23,10 +24,8 @@ describe('HomeGrid container', () => {
   const mockStore = configureStore();
 
   const createMockStore = (notes = []) => {
-    const store = mockStore({
-      notes: createEmptyState().concat(notes)
-    });
-    return store;
+    let state = createEmptyState();
+    return mockStore({ notes: state.concat(notes) });
   };
 
   beforeEach(() => {
@@ -61,6 +60,16 @@ describe('HomeGrid container', () => {
 
     expect(getByText(note1.title)).toBeInTheDocument();
     expect(getByText(note2.title)).toBeInTheDocument();
+  });
+
+  it('does not render archived notes', () => {
+    const note1 = { id: 'note1', title: 'some note', isPinned: true, isArchived: true };
+    const note2 = { id: 'note2', title: 'some other note', isArchived: true };
+    const store = createMockStore([ note1, note2 ]);
+    const { queryByText } = render(<Provider store={store}><HomeGrid /></Provider>);
+
+    expect(queryByText(note1.title)).toBeNull();
+    expect(queryByText(note2.title)).toBeNull();
   });
 
   it('trigger swap notes', () => {
@@ -140,7 +149,7 @@ describe('HomeGrid container', () => {
     expect(action.payload).toEqual(note1.id);
   });
 
-  it('triggers pin note', () => {
+  it('triggers unpin note', () => {
     const note1 = { id: 'note1', title: 'some note', isPinned: true };
     const store = createMockStore([ note1 ]);
 
@@ -151,6 +160,20 @@ describe('HomeGrid container', () => {
     const action = store.getActions()[0];
 
     expect(action.type).toEqual(unpinNote.toString());
+    expect(action.payload).toEqual(note1.id);
+  });
+
+  it('triggers archive note', () => {
+    const note1 = { id: 'note1', title: 'some note' };
+    const store = createMockStore([ note1 ]);
+
+    const { getByLabelText } = render(<Provider store={store}><HomeGrid /></Provider>);
+
+    fireEvent.click(getByLabelText(/Archive note/i));
+
+    const action = store.getActions()[0];
+
+    expect(action.type).toEqual(archiveNote.toString());
     expect(action.payload).toEqual(note1.id);
   });
 });

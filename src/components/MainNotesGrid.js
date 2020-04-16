@@ -13,6 +13,7 @@ export default function MainNotesGrid(props) {
     duplicateNote,
     pinNoteAction,
     unpinNoteAction,
+    archiveNote
   } = props;
 
   const isTherePinnedNotes = pinnedNotes && pinnedNotes.length;
@@ -27,6 +28,7 @@ export default function MainNotesGrid(props) {
         deleteNote={deleteNote}
         duplicateNote={duplicateNote}
         pinNoteAction={unpinNoteAction}
+        archiveNote={archiveNote}
       />
       <NotesGrid
         gridTitle={ isTherePinnedNotes ? 'Others' : undefined }
@@ -36,6 +38,7 @@ export default function MainNotesGrid(props) {
         deleteNote={deleteNote}
         duplicateNote={duplicateNote}
         pinNoteAction={pinNoteAction}
+        archiveNote={archiveNote}
       />
     </React.Fragment>
   );
@@ -47,5 +50,6 @@ MainNotesGrid.propTypes = {
   duplicateNote: PropTypes.func.isRequired,
   swapNotes: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired,
-  pinNoteAction: PropTypes.func
+  pinNoteAction: PropTypes.func,
+  archiveNote: PropTypes.func,
 };

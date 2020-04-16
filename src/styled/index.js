@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdUndo, MdRedo } from 'react-icons/md';
+import { MdUndo, MdRedo, MdUnarchive, MdLightbulbOutline } from 'react-icons/md';
+import { FiArchive } from 'react-icons/fi';
 import { FaEllipsisV } from 'react-icons/fa';
 import { AiFillPushpin, AiOutlinePushpin } from 'react-icons/ai';
 
@@ -20,11 +21,14 @@ export const IconWrapper = styled.div `
   }
 `;
 
-export const UndoIcon = (props) => <IconWrapper {...props}><MdUndo/></IconWrapper>;
-export const RedoIcon = (props) => <IconWrapper {...props}><MdRedo/></IconWrapper>;
-export const MenuBallsIcon = (props) => <IconWrapper {...props}><FaEllipsisV/></IconWrapper>;
-export const PinIcon = (props) => <IconWrapper {...props}><AiOutlinePushpin/></IconWrapper>;
-export const UnpinIcon = (props) => <IconWrapper {...props}><AiFillPushpin/></IconWrapper>;
+export const UndoActionIcon = (props) => <IconWrapper {...props}><MdUndo/></IconWrapper>;
+export const RedoActionIcon = (props) => <IconWrapper {...props}><MdRedo/></IconWrapper>;
+export const MenuBallsActionIcon = (props) => <IconWrapper {...props}><FaEllipsisV/></IconWrapper>;
+export const PinActionIcon = (props) => <IconWrapper {...props}><AiOutlinePushpin/></IconWrapper>;
+export const UnpinActionIcon = (props) => <IconWrapper {...props}><AiFillPushpin/></IconWrapper>;
+
+export const ArchiveActionIcon = (props) => <IconWrapper {...props}><FiArchive/></IconWrapper>;
+export const UnarchiveActionIcon = (props) => <IconWrapper {...props}><MdUnarchive/></IconWrapper>;
 
 export const ActionButton = styled.button `
   color: ${props=> props.theme.textColor};
@@ -48,4 +52,5 @@ export const ActionButton = styled.button `
   }
 `;
 
-
+export const NotesIcon = MdLightbulbOutline;
+export const ArchiveIcon = FiArchive;

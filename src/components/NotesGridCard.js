@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import {
-  MenuBallsIcon,
-  PinIcon,
-  UnpinIcon
+  MenuBallsActionIcon,
+  PinActionIcon,
+  UnpinActionIcon,
+  ArchiveActionIcon,
+  UnarchiveActionIcon
 } from '../styled';
 import HoverMenu from '../components/HoverMenu';
 import { useClickOutside } from '../helpers/useClickOutside';
@@ -18,6 +20,8 @@ export default function NoteCard(props) {
     swapNotes,
     duplicateNote,
     deleteNote,
+    archiveNote,
+    unarchiveNote,
     ...p
   } = props;
   const [isMenuVisible, setMenuVisible] = useState(false);
@@ -54,6 +58,16 @@ export default function NoteCard(props) {
     togglePinNote(note.id);
   };
 
+  const archive = (e) => {
+    e.stopPropagation();
+    archiveNote(note.id);
+  };
+
+  const unarchive = (e) => {
+    e.stopPropagation();
+    unarchiveNote(note.id);
+  };
+
   return (
     <DraggableCard {...p} item={note} onDrop={swapNotes} className="note-parent">
       <NoteInnerWrapper>
@@ -63,19 +77,37 @@ export default function NoteCard(props) {
               <NoteContent aria-label="content" className="note-content" dangerouslySetInnerHTML={{__html: note.content}}></NoteContent>
       </NoteInnerWrapper>
       <NoteActions>
-        <MenuBallsIcon
+        <MenuBallsActionIcon
           role="button"
           aria-label="More actions"
           title="More"
           onClick={toggleMenu}
         />
+        { note.isArchived ? (
+          <UnarchiveActionIcon
+            role="button"
+            aria-label="Unarchive note"
+            title="Unarchive note"
+            onClick={unarchive}
+          />
+          ) : (
+            <ArchiveActionIcon
+              role="button"
+              aria-label="Archive note"
+              title="Archive note"
+              onClick={archive}
+            />
+          )
+        }
+
+
       </NoteActions>
       { isMenuVisible ? <HoverMenu ref={hoverMenuRef} items={menuActions}/> : undefined }
       { togglePinNote ?
           <Pin role="button" onClick={togglePin}>
             { note.isPinned ?
-                <UnpinIcon aria-label="Unpin note" title="Unpin note"/>
-              : <PinIcon aria-label="Pin note" title="Pin note"/>
+                <UnpinActionIcon aria-label="Unpin note" title="Unpin note"/>
+              : <PinActionIcon aria-label="Pin note" title="Pin note"/>
             }
           </Pin>
         : undefined }
@@ -88,6 +120,8 @@ NoteCard.propTypes = {
   swapNotes: PropTypes.func.isRequired,
   deleteNote: PropTypes.func,
   togglePinNote: PropTypes.func,
+  archiveNote: PropTypes.func,
+  unarchiveNote: PropTypes.func,
 };
 
 

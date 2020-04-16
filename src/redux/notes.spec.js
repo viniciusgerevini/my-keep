@@ -7,7 +7,9 @@ import reducers, {
   updateNote,
   createEmptyState,
   pinNote,
-  unpinNote
+  unpinNote,
+  archiveNote,
+  unarchiveNote,
 } from './notes';
 
 jest.mock('uuid', () => ({ v4: jest.fn() }));
@@ -32,12 +34,12 @@ describe('Note reducers', () => {
       const action = createNote({ title: note.title, content: note.content });
 
       expect(reducers(state, action)).toEqual(
-        [{
+        createTestState([{
           ...note,
           lastUpdateAt: expect.any(Number),
           createdAt: expect.any(Number),
           sortOrder: expect.any(Number)
-        }]
+        }])
       );
     });
 
@@ -223,6 +225,69 @@ describe('Note reducers', () => {
       expect(reducers(state, action)).toEqual(createTestState([ note1, { ...note2, isPinned: false } ]));
     });
   });
+
+  describe('#archiveNote', () => {
+    it('marks notes as archived', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla',
+      };
+
+      const state = createTestState([ note1 ]);
+
+      const action = archiveNote(note1.id);
+
+      const notes = reducers(state, action);
+
+      expect(notes).toContainEqual({ ...note1, isArchived: true });
+    });
+
+    it('does not fail if note not found', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla',
+      };
+
+      const state = createTestState([ note1 ]);
+      const action = archiveNote('some random id');
+
+      expect(reducers(state, action)).toContainEqual(note1);
+    });
+  });
+
+  describe('#unarchiveNote', () => {
+    it('marks note as not archived', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla',
+        isArchived: true
+      };
+
+      const state = createTestState([ note1 ]);
+
+      const action = unarchiveNote(note1.id);
+
+      expect(reducers(state, action)).toContainEqual({...note1, isArchived: false });
+    });
+
+    it('does not fail if note not found', () => {
+      const note1 = {
+        id: 'note1',
+        title: 'some note',
+        content: 'bla bla bla',
+      };
+
+      const state = createTestState([], [ note1 ]);
+
+      const action = unarchiveNote('some random id');
+
+      expect(reducers(state, action)).not.toContain(note1);
+    });
+  });
+
   it('ignores unknown action', () => {
     const state = createTestState();
     const action = { type: 'some-unknown-action' };
