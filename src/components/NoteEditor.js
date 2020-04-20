@@ -14,7 +14,7 @@ import { UndoActionIcon, RedoActionIcon, ActionButton } from '../styled';
 import 'draft-js/dist/Draft.css';
 
 const AddNoteWrapper = styled.div `
-  width: 600px;
+  max-width: 600px;
   background-color: ${props => props.theme.background};
   box-shadow: ${props => props.theme.shadow};
   margin: 0 auto;
