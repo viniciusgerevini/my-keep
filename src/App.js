@@ -44,9 +44,7 @@ const MainPaneWrapper = styled.div `
   overflow: hidden;
   padding: 10px;
 
-  @media(min-width: 750px) {
-    margin-left: ${props => props.isSidebarOpen ? '300px' : '0px'};
-  }
+  margin-left: ${props => props.isSidebarOpen ? '300px' : '0px'};
 `;
 
 export const MainPaneInnerWrapper = styled.div `
