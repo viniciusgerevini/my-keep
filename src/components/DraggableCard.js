@@ -78,6 +78,11 @@ const NoteWrapper = styled.div `
   word-wrap: break-word;
   padding: 10px;
 
+ -moz-user-select: none;
+ -khtml-user-select: none;
+ -webkit-user-select: none;
+ -ms-user-select: none;
+ user-select: none;
   &:hover {
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302),0 1px 3px 1px rgba(60,64,67,0.149);
   }
