@@ -9,8 +9,9 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Backend from 'react-dnd-html5-backend'
-import { DndProvider } from 'react-dnd'
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from './HTML5toTouch';
+import { DndProvider } from 'react-dnd';
 
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
@@ -64,7 +65,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <DndProvider backend={Backend}>
+        <DndProvider backend={MultiBackend} options={HTML5toTouch}>
           <Router>
             <AppWrapper>
               <TopBar onSidebarButtonClicked={toggleSidebar} />
