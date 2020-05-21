@@ -66,7 +66,7 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-          <Router>
+          <Router basename="/my-keep">
             <AppWrapper>
               <TopBar onSidebarButtonClicked={toggleSidebar} />
               { isSidebarVisible ? <SideBar /> : '' }
